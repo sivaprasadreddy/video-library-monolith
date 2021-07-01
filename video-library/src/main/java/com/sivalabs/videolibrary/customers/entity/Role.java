@@ -1,12 +1,11 @@
 package com.sivalabs.videolibrary.customers.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sivalabs.videolibrary.common.entity.BaseEntity;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-
-import com.sivalabs.videolibrary.common.entity.BaseEntity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

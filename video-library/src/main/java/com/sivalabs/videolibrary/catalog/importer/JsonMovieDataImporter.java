@@ -1,16 +1,16 @@
 package com.sivalabs.videolibrary.catalog.importer;
 
+import static com.sivalabs.videolibrary.common.utils.TimeUtils.millisToLongDHMS;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sivalabs.videolibrary.catalog.entity.Genre;
+import com.sivalabs.videolibrary.catalog.entity.Movie;
+import com.sivalabs.videolibrary.catalog.service.MovieService;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import com.sivalabs.videolibrary.catalog.entity.Genre;
-import com.sivalabs.videolibrary.catalog.entity.Movie;
-import com.sivalabs.videolibrary.catalog.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -18,8 +18,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-
-import static com.sivalabs.videolibrary.common.utils.TimeUtils.millisToLongDHMS;
 
 @Slf4j
 @Component

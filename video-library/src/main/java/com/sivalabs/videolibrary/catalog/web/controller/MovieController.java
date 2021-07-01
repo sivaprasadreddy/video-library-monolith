@@ -1,10 +1,16 @@
 package com.sivalabs.videolibrary.catalog.web.controller;
 
+import static org.springframework.data.domain.Sort.Direction.ASC;
+import static org.springframework.data.domain.Sort.Direction.DESC;
+
 import com.sivalabs.videolibrary.catalog.entity.Genre;
 import com.sivalabs.videolibrary.catalog.service.MovieService;
 import com.sivalabs.videolibrary.catalog.web.dto.MovieDTO;
 import com.sivalabs.videolibrary.catalog.web.mappers.MovieDTOMapper;
 import com.sivalabs.videolibrary.config.Loggable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -19,13 +25,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static org.springframework.data.domain.Sort.Direction.ASC;
-import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @Controller
 @RequiredArgsConstructor

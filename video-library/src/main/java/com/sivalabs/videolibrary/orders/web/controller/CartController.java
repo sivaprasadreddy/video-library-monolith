@@ -13,6 +13,9 @@ import com.sivalabs.videolibrary.orders.service.OrderService;
 import com.sivalabs.videolibrary.orders.web.dto.Cart;
 import com.sivalabs.videolibrary.orders.web.dto.LineItem;
 import com.sivalabs.videolibrary.orders.web.dto.OrderDTO;
+import java.util.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -20,10 +23,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.util.*;
 
 @Controller
 @RequiredArgsConstructor

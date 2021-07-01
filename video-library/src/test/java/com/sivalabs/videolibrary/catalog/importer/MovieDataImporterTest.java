@@ -6,10 +6,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-import java.io.IOException;
-
 import com.sivalabs.videolibrary.catalog.entity.Genre;
 import com.sivalabs.videolibrary.catalog.service.MovieService;
+import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

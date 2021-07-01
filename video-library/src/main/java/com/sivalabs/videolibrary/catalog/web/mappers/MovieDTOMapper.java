@@ -1,10 +1,10 @@
 package com.sivalabs.videolibrary.catalog.web.mappers;
 
+import static com.sivalabs.videolibrary.common.utils.Constants.TMDB_IMAGE_PATH_PREFIX;
+
 import com.sivalabs.videolibrary.catalog.entity.Movie;
 import com.sivalabs.videolibrary.catalog.web.dto.MovieDTO;
 import org.springframework.stereotype.Component;
-
-import static com.sivalabs.videolibrary.common.utils.Constants.TMDB_IMAGE_PATH_PREFIX;
 
 @Component
 public class MovieDTOMapper {

@@ -2,13 +2,12 @@ package com.sivalabs.videolibrary.catalog.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sivalabs.videolibrary.catalog.entity.Genre;
-import lombok.Builder;
-import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
+import lombok.Builder;
+import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 @Data
 @Builder

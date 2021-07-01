@@ -1,14 +1,13 @@
 package com.sivalabs.videolibrary.catalog.importer;
 
+import com.sivalabs.videolibrary.catalog.entity.Genre;
+import com.sivalabs.videolibrary.catalog.entity.Movie;
 import java.math.BigDecimal;
 import java.text.Normalizer;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Pattern;
-
-import com.sivalabs.videolibrary.catalog.entity.Genre;
-import com.sivalabs.videolibrary.catalog.entity.Movie;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;

@@ -1,5 +1,7 @@
 package com.sivalabs.videolibrary.customers.service;
 
+import static com.sivalabs.videolibrary.common.utils.Constants.ROLE_USER;
+
 import com.sivalabs.videolibrary.common.exception.ApplicationException;
 import com.sivalabs.videolibrary.common.exception.UserNotFoundException;
 import com.sivalabs.videolibrary.config.Loggable;
@@ -7,16 +9,13 @@ import com.sivalabs.videolibrary.customers.entity.Role;
 import com.sivalabs.videolibrary.customers.entity.User;
 import com.sivalabs.videolibrary.customers.repository.RoleRepository;
 import com.sivalabs.videolibrary.customers.repository.UserRepository;
+import java.util.Collections;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collections;
-import java.util.Optional;
-
-import static com.sivalabs.videolibrary.common.utils.Constants.ROLE_USER;
 
 @Service
 @Transactional
@@ -46,7 +45,8 @@ public class UserService {
             throw new ApplicationException("Email " + user.getEmail() + " is already in use");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Optional<com.sivalabs.videolibrary.customers.entity.Role> roleUser = roleRepository.findByName(ROLE_USER);
+        Optional<com.sivalabs.videolibrary.customers.entity.Role> roleUser =
+                roleRepository.findByName(ROLE_USER);
         user.setRoles(Collections.singletonList(roleUser.orElse(null)));
         return userRepository.save(user);
     }

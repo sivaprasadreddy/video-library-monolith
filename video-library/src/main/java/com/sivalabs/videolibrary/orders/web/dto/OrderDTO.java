@@ -1,11 +1,10 @@
 package com.sivalabs.videolibrary.orders.web.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-
+import java.io.Serializable;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import java.io.Serializable;
+import lombok.Getter;
+import lombok.Setter;
 
 @Setter
 @Getter

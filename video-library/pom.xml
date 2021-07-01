@@ -17,7 +17,6 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
 		<java.version>11</java.version>
 		<spring-cloud.version>2020.0.1</spring-cloud.version>
 		<springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>

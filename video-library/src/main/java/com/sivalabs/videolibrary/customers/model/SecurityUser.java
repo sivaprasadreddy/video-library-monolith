@@ -1,9 +1,8 @@
 package com.sivalabs.videolibrary.customers.model;
 
+import com.sivalabs.videolibrary.customers.entity.User;
 import java.util.Collection;
 import java.util.stream.Collectors;
-
-import com.sivalabs.videolibrary.customers.entity.User;
 import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

@@ -22,10 +22,6 @@
 	</properties>
 
 	<modules>
-		<module>common</module>
-		<module>catalog</module>
-		<module>customers</module>
-		<module>orders</module>
 		<module>video-library</module>
 		<module>video-library-gatling-tests</module>
 	</modules>

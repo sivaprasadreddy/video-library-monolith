@@ -3,13 +3,12 @@ package com.sivalabs.videolibrary.orders.service;
 import com.sivalabs.videolibrary.common.exception.BadRequestException;
 import com.sivalabs.videolibrary.common.exception.ResourceNotFoundException;
 import com.sivalabs.videolibrary.config.Loggable;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
 import com.sivalabs.videolibrary.orders.entity.Order;
 import com.sivalabs.videolibrary.orders.model.OrderConfirmationDTO;
 import com.sivalabs.videolibrary.orders.repository.OrderRepository;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

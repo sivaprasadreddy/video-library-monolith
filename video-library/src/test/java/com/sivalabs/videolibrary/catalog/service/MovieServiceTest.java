@@ -5,11 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
-import java.util.ArrayList;
-
 import com.sivalabs.videolibrary.catalog.entity.Movie;
 import com.sivalabs.videolibrary.catalog.repository.GenreRepository;
 import com.sivalabs.videolibrary.catalog.repository.MovieRepository;
+import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

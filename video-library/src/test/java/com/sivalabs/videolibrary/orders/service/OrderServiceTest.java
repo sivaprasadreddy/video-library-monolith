@@ -4,12 +4,11 @@ import static com.sivalabs.videolibrary.datafactory.TestDataFactory.createOrder;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
-import java.util.Optional;
-
 import com.sivalabs.videolibrary.common.exception.BadRequestException;
 import com.sivalabs.videolibrary.common.exception.ResourceNotFoundException;
 import com.sivalabs.videolibrary.orders.entity.Order;
 import com.sivalabs.videolibrary.orders.repository.OrderRepository;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,11 +1,10 @@
 package com.sivalabs.videolibrary.orders.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sivalabs.videolibrary.customers.entity.User;
 import java.math.BigDecimal;
 import java.util.Set;
 import javax.persistence.*;
-
-import com.sivalabs.videolibrary.customers.entity.User;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

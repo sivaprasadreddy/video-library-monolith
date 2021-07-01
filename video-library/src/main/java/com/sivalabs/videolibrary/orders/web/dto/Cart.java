@@ -1,12 +1,11 @@
 package com.sivalabs.videolibrary.orders.web.dto;
 
 import com.sivalabs.videolibrary.catalog.web.dto.MovieDTO;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 public class Cart {
 

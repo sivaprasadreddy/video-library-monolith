@@ -5,7 +5,6 @@ import com.sivalabs.videolibrary.catalog.entity.Movie;
 import com.sivalabs.videolibrary.catalog.repository.GenreRepository;
 import com.sivalabs.videolibrary.catalog.repository.MovieRepository;
 import com.sivalabs.videolibrary.config.Loggable;
-
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
