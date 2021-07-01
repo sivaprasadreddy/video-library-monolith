@@ -3,8 +3,8 @@ package com.sivalabs.videolibrary.web.controller;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.sivalabs.videolibrary.catalog.service.MovieService;
 import com.sivalabs.videolibrary.common.AbstractIntegrationTest;
-import com.sivalabs.videolibrary.core.service.MovieService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

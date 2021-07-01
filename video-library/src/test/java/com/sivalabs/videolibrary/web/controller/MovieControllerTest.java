@@ -6,10 +6,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import com.sivalabs.videolibrary.catalog.entity.Movie;
+import com.sivalabs.videolibrary.catalog.service.MovieService;
+import com.sivalabs.videolibrary.catalog.web.controller.MovieController;
+import com.sivalabs.videolibrary.catalog.web.mappers.MovieDTOMapper;
 import com.sivalabs.videolibrary.common.AbstractMvcUnitTest;
-import com.sivalabs.videolibrary.core.entity.Movie;
-import com.sivalabs.videolibrary.core.service.MovieService;
-import com.sivalabs.videolibrary.web.mappers.MovieDTOMapper;
 import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

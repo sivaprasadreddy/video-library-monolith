@@ -4,7 +4,12 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
 	http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.4.3</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
 	<groupId>com.sivalabs</groupId>
 	<artifactId>video-library-monolith</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -13,10 +18,16 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<java.version>11</java.version>
 	</properties>
 
 	<modules>
+		<module>common</module>
+		<module>catalog</module>
+		<module>customers</module>
+		<module>orders</module>
 		<module>video-library</module>
 		<module>video-library-gatling-tests</module>
 	</modules>
+
 </project>

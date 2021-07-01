@@ -1,8 +1,13 @@
 package com.sivalabs.videolibrary.datafactory;
 
-import static com.sivalabs.videolibrary.importer.MovieRowMapperUtils.toSlug;
+import com.sivalabs.videolibrary.catalog.entity.Genre;
+import com.sivalabs.videolibrary.catalog.entity.Movie;
+import com.sivalabs.videolibrary.customers.entity.User;
+import com.sivalabs.videolibrary.orders.entity.Order;
+import com.sivalabs.videolibrary.orders.entity.OrderItem;
 
-import com.sivalabs.videolibrary.core.entity.*;
+import static com.sivalabs.videolibrary.catalog.importer.MovieRowMapperUtils.toSlug;
+
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashSet;

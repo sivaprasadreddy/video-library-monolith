@@ -1,7 +1,7 @@
 package com.sivalabs.videolibrary.config;
 
-import com.sivalabs.videolibrary.importer.DataImportProperties;
-import com.sivalabs.videolibrary.importer.JsonMovieDataImporter;
+import com.sivalabs.videolibrary.catalog.importer.DataImportProperties;
+import com.sivalabs.videolibrary.catalog.importer.JsonMovieDataImporter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;

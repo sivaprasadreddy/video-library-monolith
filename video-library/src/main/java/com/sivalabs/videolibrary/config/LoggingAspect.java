@@ -1,7 +1,7 @@
 package com.sivalabs.videolibrary.config;
 
-import com.sivalabs.videolibrary.core.utils.Constants;
-import com.sivalabs.videolibrary.core.utils.TimeUtils;
+import com.sivalabs.videolibrary.common.utils.Constants;
+import com.sivalabs.videolibrary.common.utils.TimeUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
