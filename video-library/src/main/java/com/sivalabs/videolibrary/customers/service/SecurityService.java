@@ -19,15 +19,13 @@ public class SecurityService {
 
     private final UserService userService;
 
-    public com.sivalabs.videolibrary.customers.entity.User loginUser() {
+    public User loginUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication.getPrincipal() == null) {
             return null;
         }
-        if (authentication.getPrincipal()
-                instanceof com.sivalabs.videolibrary.customers.model.SecurityUser) {
-            com.sivalabs.videolibrary.customers.model.SecurityUser securityUser =
-                    (SecurityUser) authentication.getPrincipal();
+        if (authentication.getPrincipal() instanceof SecurityUser) {
+            SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
             return securityUser.getUser();
         } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();

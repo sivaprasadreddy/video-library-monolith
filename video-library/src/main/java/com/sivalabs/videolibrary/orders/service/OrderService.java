@@ -9,21 +9,19 @@ import com.sivalabs.videolibrary.orders.repository.OrderRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 @Slf4j
 @Loggable
 public class OrderService {
 
     private final OrderRepository orderRepository;
-
-    public OrderService(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
-    }
 
     public OrderConfirmationDTO createOrder(Order order) {
         order.setOrderId(UUID.randomUUID().toString());

@@ -13,22 +13,22 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "movies")
+@Table(name = "products")
 @Setter
 @Getter
 @EqualsAndHashCode(
         of = {"id"},
         callSuper = false)
-public class Movie implements Serializable {
+public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @SequenceGenerator(
-            name = "movie_id_generator",
-            sequenceName = "movie_id_seq",
+            name = "product_id_generator",
+            sequenceName = "product_id_seq",
             allocationSize = 1)
-    @GeneratedValue(generator = "movie_id_generator")
+    @GeneratedValue(generator = "product_id_generator")
     private Long id;
 
     private String title;
@@ -86,10 +86,10 @@ public class Movie implements Serializable {
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(
-            name = "movie_genre",
-            joinColumns = {@JoinColumn(name = "MOVIE_ID", referencedColumnName = "ID")},
-            inverseJoinColumns = {@JoinColumn(name = "GENRE_ID", referencedColumnName = "ID")})
-    private Set<Genre> genres = new HashSet<>();
+            name = "product_category",
+            joinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "CATEGORY_ID", referencedColumnName = "ID")})
+    private Set<Category> categories = new HashSet<>();
 
     @PrePersist
     public void onCreate() {

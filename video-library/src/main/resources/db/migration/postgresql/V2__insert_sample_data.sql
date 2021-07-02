@@ -16,7 +16,7 @@ INSERT INTO user_role (user_id, role_id) VALUES
 (3, 2)
 ;
 
-INSERT INTO GENRES(ID, TMDB_ID, NAME, SLUG) VALUES
+INSERT INTO CATEGORIES(ID, TMDB_ID, NAME, SLUG) VALUES
 (1,	28, 'Action', 'action'),
 (2,	12, 'Adventure', 'adventure'),
 (3,	16, 'Animation', 'animation'),

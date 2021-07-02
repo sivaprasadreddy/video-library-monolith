@@ -3,10 +3,10 @@ package com.sivalabs.videolibrary.catalog.web.controller;
 import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
-import com.sivalabs.videolibrary.catalog.entity.Genre;
-import com.sivalabs.videolibrary.catalog.service.MovieService;
-import com.sivalabs.videolibrary.catalog.web.dto.MovieDTO;
-import com.sivalabs.videolibrary.catalog.web.mappers.MovieDTOMapper;
+import com.sivalabs.videolibrary.catalog.entity.Category;
+import com.sivalabs.videolibrary.catalog.service.CatalogService;
+import com.sivalabs.videolibrary.catalog.web.dto.ProductDTO;
+import com.sivalabs.videolibrary.catalog.web.mappers.ProductDTOMapper;
 import com.sivalabs.videolibrary.config.Loggable;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +30,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 @Slf4j
 @Loggable
-public class MovieController {
+public class CatalogController {
 
-    private final MovieService movieService;
+    private final CatalogService catalogService;
 
-    private final MovieDTOMapper movieDTOMapper;
+    private final ProductDTOMapper productDTOMapper;
 
     @GetMapping("/login")
     public String loginForm() {
@@ -51,32 +51,33 @@ public class MovieController {
                     })
                     Pageable pageable,
             Model model) {
-        Page<MovieDTO> data;
+        Page<ProductDTO> data;
         if (StringUtils.isEmpty(query)) {
-            log.info("Fetching movies with page: {}", pageable.getPageNumber());
-            data = movieService.findMovies(pageable).map(movieDTOMapper::map);
+            log.info("Fetching products with page: {}", pageable.getPageNumber());
+            data = catalogService.findProducts(pageable).map(productDTOMapper::map);
             model.addAttribute("paginationPrefix", "/?");
         } else {
-            log.info("Searching movies for {} with page: {}", query, pageable.getPageNumber());
+            log.info("Searching products for {} with page: {}", query, pageable.getPageNumber());
             model.addAttribute("header", "Search results for \"" + query + "\"");
             model.addAttribute("paginationPrefix", "/?query=" + query);
-            data = movieService.searchMovies(query, pageable).map(movieDTOMapper::map);
+            data = catalogService.searchProducts(query, pageable).map(productDTOMapper::map);
         }
 
         model.addAttribute("page", data.getNumber() + 1);
-        model.addAttribute("moviesData", data);
+        model.addAttribute("productsData", data);
         return "home";
     }
 
-    @GetMapping({"/movies/{id}"})
+    @GetMapping({"/products/{id}"})
     public String viewBook(@PathVariable Long id, Model model) {
-        MovieDTO movie = movieService.findMovieById(id).map(movieDTOMapper::map).orElse(null);
-        model.addAttribute("movie", movie);
-        return "movie";
+        ProductDTO product =
+                catalogService.findProductById(id).map(productDTOMapper::map).orElse(null);
+        model.addAttribute("product", product);
+        return "product";
     }
 
-    @GetMapping("/genre/{slug}")
-    public String byGenre(
+    @GetMapping("/category/{slug}")
+    public String byCategory(
             @PathVariable String slug,
             @PageableDefault(size = 24)
                     @SortDefault.SortDefaults({
@@ -85,28 +86,28 @@ public class MovieController {
                     })
                     Pageable pageable,
             Model model) {
-        log.info("Fetching movies by genre: {} with page: {}", slug, pageable.getPageNumber());
-        Optional<Genre> byId = movieService.findGenreBySlug(slug);
+        log.info("Fetching products by category: {} with page: {}", slug, pageable.getPageNumber());
+        Optional<Category> byId = catalogService.findCategoryBySlug(slug);
         if (byId.isPresent()) {
-            Page<MovieDTO> data =
-                    movieService
-                            .findMoviesByGenre(byId.get().getId(), pageable)
-                            .map(movieDTOMapper::map);
-            model.addAttribute("header", "Movies by Genre \"" + byId.get().getName() + "\"");
-            model.addAttribute("moviesData", data);
+            Page<ProductDTO> data =
+                    catalogService
+                            .findProductsByCategory(byId.get().getId(), pageable)
+                            .map(productDTOMapper::map);
+            model.addAttribute("header", "Products by Category \"" + byId.get().getName() + "\"");
+            model.addAttribute("productsData", data);
             model.addAttribute("page", data.getNumber() + 1);
         } else {
-            model.addAttribute("header", "Movies by Genre \"" + slug + "\"");
-            model.addAttribute("moviesData", new ArrayList<>(0));
+            model.addAttribute("header", "Products by Category \"" + slug + "\"");
+            model.addAttribute("productsData", new ArrayList<>(0));
             model.addAttribute("page", 1);
         }
-        model.addAttribute("paginationPrefix", "/genre/" + slug + "?");
+        model.addAttribute("paginationPrefix", "/category/" + slug + "?");
         return "home";
     }
 
-    @ModelAttribute("genres")
-    public List<Genre> allGenres() {
+    @ModelAttribute("categories")
+    public List<Category> allCategories() {
         Sort sort = Sort.by(ASC, "name");
-        return movieService.findAllGenres(sort);
+        return catalogService.findAllCategories(sort);
     }
 }

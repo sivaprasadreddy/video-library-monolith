@@ -1,7 +1,5 @@
 package com.sivalabs.videolibrary.orders.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sivalabs.videolibrary.customers.entity.User;
 import java.math.BigDecimal;
 import java.util.Set;
 import javax.persistence.*;
@@ -44,10 +42,8 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by")
-    private User createdBy;
+    @Column(name = "created_by")
+    private Long createdBy;
 
     public enum OrderStatus {
         NEW,

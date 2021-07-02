@@ -1,6 +1,6 @@
 package com.sivalabs.videolibrary.orders.web.dto;
 
-import com.sivalabs.videolibrary.catalog.web.dto.MovieDTO;
+import com.sivalabs.videolibrary.orders.entity.OrderedProduct;
 import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,8 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LineItem {
-
-    private MovieDTO product;
+    private OrderedProduct product;
 
     private int quantity;
 

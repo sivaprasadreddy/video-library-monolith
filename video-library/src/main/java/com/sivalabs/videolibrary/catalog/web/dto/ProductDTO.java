@@ -1,7 +1,7 @@
 package com.sivalabs.videolibrary.catalog.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sivalabs.videolibrary.catalog.entity.Genre;
+import com.sivalabs.videolibrary.catalog.entity.Category;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 
 @Data
 @Builder
-public class MovieDTO {
+public class ProductDTO {
 
     private Long id;
 
@@ -43,7 +43,7 @@ public class MovieDTO {
 
     private BigDecimal price;
 
-    private Set<Genre> genres;
+    private Set<Category> categories;
 
     public String getTrimmedTitle() {
         return StringUtils.abbreviate(title, 30);

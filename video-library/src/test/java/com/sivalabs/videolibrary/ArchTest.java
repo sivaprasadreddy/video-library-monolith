@@ -26,7 +26,7 @@ class ArchTest {
                 .resideInAnyPackage("com.sivalabs.videolibrary.core.repository..")
                 .should()
                 .dependOnClassesThat()
-                .resideInAnyPackage("com.sivalabs.videolibrary.web..")
+                .resideInAnyPackage("com.sivalabs.videolibrary.catalog.web..")
                 .because("Services and repositories should not depend on web layer")
                 .check(importedClasses);
     }

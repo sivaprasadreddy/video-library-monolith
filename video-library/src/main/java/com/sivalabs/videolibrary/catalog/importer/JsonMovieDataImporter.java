@@ -4,9 +4,9 @@ import static com.sivalabs.videolibrary.common.utils.TimeUtils.millisToLongDHMS;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sivalabs.videolibrary.catalog.entity.Genre;
-import com.sivalabs.videolibrary.catalog.entity.Movie;
-import com.sivalabs.videolibrary.catalog.service.MovieService;
+import com.sivalabs.videolibrary.catalog.entity.Category;
+import com.sivalabs.videolibrary.catalog.entity.Product;
+import com.sivalabs.videolibrary.catalog.service.CatalogService;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -24,10 +24,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class JsonMovieDataImporter {
 
-    private final MovieService movieService;
-
-    private final MovieRowMapperUtils movieRowMapperUtils;
-
+    private final CatalogService catalogService;
+    private final MovieRowMapper movieRowMapper;
     private final DataImportProperties dataImportProperties;
 
     @Async
@@ -40,77 +38,78 @@ public class JsonMovieDataImporter {
     }
 
     private void importDataInternal() throws IOException {
-        deleteExistingMovieData();
-        importMoviesMetaData();
+        deleteExistingProductsData();
+        importProductsMetaData();
     }
 
-    private void deleteExistingMovieData() {
-        movieService.cleanupMovieData();
+    private void deleteExistingProductsData() {
+        catalogService.cleanupProductsData();
     }
 
-    private void importMoviesMetaData() throws IOException {
+    private void importProductsMetaData() throws IOException {
         log.info(
-                "Initializing movies database from files: {}",
+                "Initializing products database from files: {}",
                 dataImportProperties.getMoviesDataFiles());
         long start = System.currentTimeMillis();
         long recordCount = 0;
         for (String dataFile : dataImportProperties.getMoviesDataFiles()) {
-            recordCount += importMoviesFromJsonFile(dataFile, recordCount);
+            recordCount += importProductsFromJsonFile(dataFile, recordCount);
         }
         long end = System.currentTimeMillis();
-        log.debug("Time took for importing movie metadata : {} ", millisToLongDHMS(end - start));
+        log.debug("Time took for importing products : {} ", millisToLongDHMS(end - start));
     }
 
-    private long importMoviesFromJsonFile(String fileName, long recordCount) throws IOException {
-        log.info("Importing movies from file: {}", fileName);
+    private long importProductsFromJsonFile(String fileName, long recordCount) throws IOException {
+        log.info("Importing products from file: {}", fileName);
         ClassPathResource file = new ClassPathResource(fileName, this.getClass());
         List<String> lines = IOUtils.readLines(file.getInputStream(), StandardCharsets.UTF_8);
         ObjectMapper objectMapper =
                 new ObjectMapper()
                         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        Map<String, Genre> genresMap =
-                movieService.findAllGenres(Sort.by("name")).stream()
-                        .collect(Collectors.toMap(Genre::getName, g -> g));
-        List<Movie> moviesBatch = new ArrayList<>();
+        Map<String, Category> genresMap =
+                catalogService.findAllCategories(Sort.by("name")).stream()
+                        .collect(Collectors.toMap(Category::getName, g -> g));
+        List<Product> productsBatches = new ArrayList<>();
 
         log.info("Line count:{}", lines.size());
         for (String line : lines) {
             MovieJsonRecord movieJsonRecord = objectMapper.readValue(line, MovieJsonRecord.class);
-            Movie movie = movieRowMapperUtils.mapToMovieEntity(movieJsonRecord);
-            movie.setGenres(saveGenres(genresMap, movie.getGenres()));
-            moviesBatch.add(movie);
+            Product product = movieRowMapper.mapToMovieEntity(movieJsonRecord);
+            product.setCategories(saveCategories(genresMap, product.getCategories()));
+            productsBatches.add(product);
             recordCount++;
             if (dataImportProperties.getMaxSize() > 0
                     && recordCount >= dataImportProperties.getMaxSize()) {
                 break;
             }
-            if (moviesBatch.size() >= dataImportProperties.getBatchSize()) {
-                movieService.createMovies(moviesBatch);
-                log.debug("Imported {} movies so far", recordCount);
-                moviesBatch = new ArrayList<>();
+            if (productsBatches.size() >= dataImportProperties.getBatchSize()) {
+                catalogService.createProducts(productsBatches);
+                log.debug("Imported {} products so far", recordCount);
+                productsBatches = new ArrayList<>();
             }
         }
 
-        if (!moviesBatch.isEmpty()) {
-            movieService.createMovies(moviesBatch);
-            log.debug("Imported {} movies so far", recordCount);
+        if (!productsBatches.isEmpty()) {
+            catalogService.createProducts(productsBatches);
+            log.debug("Imported {} products so far", recordCount);
         }
-        log.info("Imported movies with {} records from file {}", recordCount, fileName);
+        log.info("Imported products with {} records from file {}", recordCount, fileName);
         return recordCount;
     }
 
-    private Set<Genre> saveGenres(Map<String, Genre> existingGenres, Set<Genre> genres) {
-        Set<Genre> genreList = new HashSet<>();
-        for (Genre genre : genres) {
-            Genre existingGenre = existingGenres.get(genre.getName());
-            if (existingGenre != null) {
-                genreList.add(existingGenre);
+    private Set<Category> saveCategories(
+            Map<String, Category> existingCategories, Set<Category> categories) {
+        Set<Category> categoryList = new HashSet<>();
+        for (Category category : categories) {
+            Category existingCategory = existingCategories.get(category.getName());
+            if (existingCategory != null) {
+                categoryList.add(existingCategory);
             } else {
-                Genre savedGenre = movieService.saveGenre(genre);
-                genreList.add(savedGenre);
-                existingGenres.put(savedGenre.getName(), savedGenre);
+                Category savedCategory = catalogService.saveCategory(category);
+                categoryList.add(savedCategory);
+                existingCategories.put(savedCategory.getName(), savedCategory);
             }
         }
-        return genreList;
+        return categoryList;
     }
 }

@@ -1,15 +1,14 @@
 package com.sivalabs.videolibrary.orders.web.controller;
 
-import com.sivalabs.videolibrary.catalog.service.MovieService;
-import com.sivalabs.videolibrary.catalog.web.dto.MovieDTO;
-import com.sivalabs.videolibrary.catalog.web.mappers.MovieDTOMapper;
 import com.sivalabs.videolibrary.config.Loggable;
 import com.sivalabs.videolibrary.customers.entity.User;
 import com.sivalabs.videolibrary.customers.service.SecurityService;
 import com.sivalabs.videolibrary.orders.entity.Order;
 import com.sivalabs.videolibrary.orders.entity.OrderItem;
+import com.sivalabs.videolibrary.orders.entity.OrderedProduct;
 import com.sivalabs.videolibrary.orders.model.OrderConfirmationDTO;
 import com.sivalabs.videolibrary.orders.service.OrderService;
+import com.sivalabs.videolibrary.orders.service.ProductService;
 import com.sivalabs.videolibrary.orders.web.dto.Cart;
 import com.sivalabs.videolibrary.orders.web.dto.LineItem;
 import com.sivalabs.videolibrary.orders.web.dto.OrderDTO;
@@ -30,13 +29,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Slf4j
 public class CartController {
 
-    private final MovieService movieService;
-
+    private final ProductService productService;
     private final SecurityService securityService;
-
     private final OrderService orderService;
-
-    private final MovieDTOMapper movieDTOMapper;
 
     @GetMapping(value = "/cart")
     public String showCart(HttpServletRequest request, Model model) {
@@ -78,7 +73,7 @@ public class CartController {
             items.add(orderItem);
         }
         newOrder.setItems(items);
-        newOrder.setCreatedBy(user);
+        newOrder.setCreatedBy(user.getId());
 
         OrderConfirmationDTO orderConfirmation = orderService.createOrder(newOrder);
         redirectAttributes.addFlashAttribute("orderConfirmation", orderConfirmation);
@@ -107,16 +102,12 @@ public class CartController {
 
     @PostMapping(value = "/cart/items")
     @ResponseBody
-    public Cart addToCart(@RequestBody MovieDTO product, HttpServletRequest request) {
+    public Cart addToCart(@RequestBody OrderedProduct product, HttpServletRequest request) {
         log.info("Add tmdbId: {} to cart", product.getTmdbId());
         Cart cart = getOrCreateCart(request);
-        MovieDTO p =
-                movieService
-                        .findMovieByTmdbId(product.getTmdbId())
-                        .map(movieDTOMapper::map)
-                        .orElse(null);
-        log.info("Adding product: {}", p.getTmdbId());
-        cart.addItem(p);
+        OrderedProduct item = productService.findProductByCode(product.getTmdbId()).orElse(null);
+        log.info("Adding product: {}", item.getTmdbId());
+        cart.addItem(item);
         return cart;
     }
 

@@ -24,7 +24,6 @@
 		<commons-io.version>2.6</commons-io.version>
 		<opencsv.version>5.0</opencsv.version>
 		<testcontainers.version>1.15.2</testcontainers.version>
-		<p6spy.starter.version>1.6.2</p6spy.starter.version>
 		<archunit-junit5.version>0.17.0</archunit-junit5.version>
 
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -107,16 +106,6 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>com.github.gavlyukovskiy</groupId>
-			<artifactId>p6spy-spring-boot-starter</artifactId>
-			<version>${p6spy.starter.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github.gavlyukovskiy</groupId>
-			<artifactId>flexy-pool-spring-boot-starter</artifactId>
-			<version>${p6spy.starter.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

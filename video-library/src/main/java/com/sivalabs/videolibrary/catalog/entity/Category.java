@@ -9,20 +9,20 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "genres")
+@Table(name = "categories")
 @Setter
 @Getter
 @EqualsAndHashCode(
         of = {"id"},
         callSuper = false)
-public class Genre implements Serializable {
+public class Category implements Serializable {
 
     @Id
     @SequenceGenerator(
-            name = "genre_id_generator",
-            sequenceName = "genre_id_seq",
+            name = "category_id_generator",
+            sequenceName = "category_id_seq",
             allocationSize = 1)
-    @GeneratedValue(generator = "genre_id_generator")
+    @GeneratedValue(generator = "category_id_generator")
     private Long id;
 
     private Long tmdbId;
@@ -34,6 +34,6 @@ public class Genre implements Serializable {
     private String slug;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "genres")
-    private Set<Movie> movies;
+    @ManyToMany(mappedBy = "categories")
+    private Set<Product> products;
 }

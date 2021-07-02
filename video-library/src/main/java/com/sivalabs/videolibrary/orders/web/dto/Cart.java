@@ -1,6 +1,6 @@
 package com.sivalabs.videolibrary.orders.web.dto;
 
-import com.sivalabs.videolibrary.catalog.web.dto.MovieDTO;
+import com.sivalabs.videolibrary.orders.entity.OrderedProduct;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ public class Cart {
         items = new ArrayList<>();
     }
 
-    public void addItem(MovieDTO product) {
+    public void addItem(OrderedProduct product) {
         for (LineItem lineItem : items) {
             if (lineItem.getProduct().getTmdbId().equals(product.getTmdbId())) {
                 lineItem.setQuantity(lineItem.getQuantity() + 1);
@@ -26,7 +26,7 @@ public class Cart {
         this.items.add(item);
     }
 
-    public void updateItemQuantity(MovieDTO product, int quantity) {
+    public void updateItemQuantity(OrderedProduct product, int quantity) {
         for (LineItem lineItem : items) {
             if (lineItem.getProduct().getTmdbId().equals(product.getTmdbId())) {
                 lineItem.setQuantity(quantity);

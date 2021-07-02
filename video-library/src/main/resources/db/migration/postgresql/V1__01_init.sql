@@ -1,7 +1,7 @@
 create sequence user_id_seq start with 1 increment by 1;
 create sequence role_id_seq start with 1 increment by 1;
-create sequence movie_id_seq start with 1 increment by 1;
-create sequence genre_id_seq start with 1 increment by 1;
+create sequence product_id_seq start with 1 increment by 1;
+create sequence category_id_seq start with 1 increment by 1;
 
 create sequence order_id_seq start with 1 increment by 1;
 create sequence order_item_id_seq start with 1 increment by 1;
@@ -31,8 +31,8 @@ create table user_role (
     role_id bigint REFERENCES roles(id)
 );
 
-create table movies (
-    id bigint DEFAULT nextval('movie_id_seq') not null,
+create table products (
+    id bigint DEFAULT nextval('product_id_seq') not null,
     title varchar(255),
     tmdb_id bigint,
     imdb_id varchar(255),
@@ -53,19 +53,19 @@ create table movies (
     primary key (id)
 );
 
-create table genres (
-    id bigint DEFAULT nextval('genre_id_seq') not null,
+create table categories (
+    id bigint DEFAULT nextval('category_id_seq') not null,
     tmdb_id int,
     name varchar(255) not null,
     slug varchar(255) not null,
     primary key (id),
-    CONSTRAINT genre_name_unique UNIQUE(name),
-    CONSTRAINT genre_slug_unique UNIQUE(slug)
+    CONSTRAINT category_name_unique UNIQUE(name),
+    CONSTRAINT category_slug_unique UNIQUE(slug)
 );
 
-create table movie_genre (
-    movie_id bigint REFERENCES movies(id),
-    genre_id bigint REFERENCES genres(id)
+create table product_category (
+    product_id bigint REFERENCES products(id),
+    category_id bigint REFERENCES categories(id)
 );
 
 create table orders (
