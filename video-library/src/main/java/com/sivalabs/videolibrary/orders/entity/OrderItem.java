@@ -1,6 +1,6 @@
 package com.sivalabs.videolibrary.orders.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sivalabs.videolibrary.common.entity.BaseEntity;
 import java.math.BigDecimal;
 import javax.persistence.*;
 import lombok.EqualsAndHashCode;
@@ -14,7 +14,7 @@ import lombok.Setter;
 @EqualsAndHashCode(
         exclude = {"order"},
         callSuper = false)
-public class OrderItem {
+public class OrderItem extends BaseEntity {
 
     @Id
     @SequenceGenerator(
@@ -34,7 +34,6 @@ public class OrderItem {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "order_id")
-    @JsonIgnore
     private Order order;
 
     public BigDecimal getSubTotal() {

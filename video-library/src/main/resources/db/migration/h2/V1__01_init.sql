@@ -58,6 +58,8 @@ create table categories (
     tmdb_id int,
     name varchar(255) not null,
     slug varchar(255) not null,
+    created_at timestamp,
+    updated_at timestamp,
     primary key (id),
     CONSTRAINT category_name_unique UNIQUE(name),
     CONSTRAINT category_slug_unique UNIQUE(slug)

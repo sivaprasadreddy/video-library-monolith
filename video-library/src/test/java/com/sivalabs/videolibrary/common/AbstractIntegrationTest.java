@@ -1,6 +1,6 @@
 package com.sivalabs.videolibrary.common;
 
-import static com.sivalabs.videolibrary.common.utils.Constants.PROFILE_IT;
+import static com.sivalabs.videolibrary.common.TestConstants.PROFILE_IT;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 import com.fasterxml.jackson.databind.ObjectMapper;

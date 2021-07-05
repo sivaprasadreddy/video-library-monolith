@@ -4,7 +4,6 @@ import com.sivalabs.videolibrary.catalog.entity.Category;
 import com.sivalabs.videolibrary.catalog.entity.Product;
 import com.sivalabs.videolibrary.catalog.repository.CategoryRepository;
 import com.sivalabs.videolibrary.catalog.repository.ProductRepository;
-import com.sivalabs.videolibrary.config.Loggable;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-@Loggable
 public class CatalogService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;

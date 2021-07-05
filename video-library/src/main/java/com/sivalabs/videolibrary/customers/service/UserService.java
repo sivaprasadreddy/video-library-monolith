@@ -3,8 +3,8 @@ package com.sivalabs.videolibrary.customers.service;
 import static com.sivalabs.videolibrary.common.utils.Constants.ROLE_USER;
 
 import com.sivalabs.videolibrary.common.exception.ApplicationException;
+import com.sivalabs.videolibrary.common.exception.BadRequestException;
 import com.sivalabs.videolibrary.common.exception.UserNotFoundException;
-import com.sivalabs.videolibrary.config.Loggable;
 import com.sivalabs.videolibrary.customers.entity.Role;
 import com.sivalabs.videolibrary.customers.entity.User;
 import com.sivalabs.videolibrary.customers.repository.RoleRepository;
@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Slf4j
 @RequiredArgsConstructor
-@Loggable
 public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -67,7 +66,7 @@ public class UserService {
             user.setPassword(passwordEncoder.encode(newPwd));
             userRepository.save(user);
         } else {
-            throw new ApplicationException("Current password doesn't match");
+            throw new BadRequestException("Current password doesn't match");
         }
     }
 }

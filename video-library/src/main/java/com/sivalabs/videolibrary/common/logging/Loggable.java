@@ -1,4 +1,4 @@
-package com.sivalabs.videolibrary.config;
+package com.sivalabs.videolibrary.common.logging;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;

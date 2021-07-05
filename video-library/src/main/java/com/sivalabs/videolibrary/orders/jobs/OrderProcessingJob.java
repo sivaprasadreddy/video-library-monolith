@@ -1,6 +1,6 @@
 package com.sivalabs.videolibrary.orders.jobs;
 
-import com.sivalabs.videolibrary.config.Loggable;
+import com.sivalabs.videolibrary.common.logging.Loggable;
 import com.sivalabs.videolibrary.orders.entity.Order;
 import com.sivalabs.videolibrary.orders.service.OrderService;
 import java.util.List;

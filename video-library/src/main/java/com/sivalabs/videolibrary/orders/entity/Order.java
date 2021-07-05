@@ -1,5 +1,6 @@
 package com.sivalabs.videolibrary.orders.entity;
 
+import com.sivalabs.videolibrary.common.entity.BaseEntity;
 import java.math.BigDecimal;
 import java.util.Set;
 import javax.persistence.*;
@@ -14,7 +15,7 @@ import lombok.Setter;
 @EqualsAndHashCode(
         of = {"id"},
         callSuper = false)
-public class Order {
+public class Order extends BaseEntity {
 
     @Id
     @SequenceGenerator(

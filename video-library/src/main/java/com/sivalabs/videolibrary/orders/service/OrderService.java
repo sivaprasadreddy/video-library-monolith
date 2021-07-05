@@ -2,7 +2,6 @@ package com.sivalabs.videolibrary.orders.service;
 
 import com.sivalabs.videolibrary.common.exception.BadRequestException;
 import com.sivalabs.videolibrary.common.exception.ResourceNotFoundException;
-import com.sivalabs.videolibrary.config.Loggable;
 import com.sivalabs.videolibrary.orders.entity.Order;
 import com.sivalabs.videolibrary.orders.model.OrderConfirmationDTO;
 import com.sivalabs.videolibrary.orders.repository.OrderRepository;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
-@Loggable
 public class OrderService {
 
     private final OrderRepository orderRepository;
@@ -30,10 +28,6 @@ public class OrderService {
         Order savedOrder = this.orderRepository.save(order);
         log.info("Created Order ID=" + savedOrder.getId() + ", ref_num=" + savedOrder.getOrderId());
         return new OrderConfirmationDTO(savedOrder.getOrderId(), savedOrder.getStatus());
-    }
-
-    public List<Order> findAllOrders() {
-        return orderRepository.findAll();
     }
 
     public Optional<Order> findOrderByOrderId(String orderId) {

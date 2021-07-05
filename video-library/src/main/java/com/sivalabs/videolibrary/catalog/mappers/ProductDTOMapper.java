@@ -1,13 +1,12 @@
-package com.sivalabs.videolibrary.catalog.web.mappers;
-
-import static com.sivalabs.videolibrary.common.utils.Constants.TMDB_IMAGE_PATH_PREFIX;
+package com.sivalabs.videolibrary.catalog.mappers;
 
 import com.sivalabs.videolibrary.catalog.entity.Product;
-import com.sivalabs.videolibrary.catalog.web.dto.ProductDTO;
+import com.sivalabs.videolibrary.catalog.model.ProductDTO;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ProductDTOMapper {
+    public static final String TMDB_IMAGE_PATH_PREFIX = "https://image.tmdb.org/t/p/w500";
 
     public ProductDTO map(Product product) {
         if (product == null) {

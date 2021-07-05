@@ -1,7 +1,6 @@
 package com.sivalabs.videolibrary.catalog.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.io.Serializable;
+import com.sivalabs.videolibrary.common.entity.BaseEntity;
 import java.util.Set;
 import javax.persistence.*;
 import lombok.EqualsAndHashCode;
@@ -15,7 +14,7 @@ import lombok.Setter;
 @EqualsAndHashCode(
         of = {"id"},
         callSuper = false)
-public class Category implements Serializable {
+public class Category extends BaseEntity {
 
     @Id
     @SequenceGenerator(
@@ -33,7 +32,6 @@ public class Category implements Serializable {
     @Column(nullable = false)
     private String slug;
 
-    @JsonIgnore
     @ManyToMany(mappedBy = "categories")
     private Set<Product> products;
 }

@@ -27,6 +27,11 @@ public class UserController {
     private final UserService userService;
     private final SecurityService securityService;
 
+    @GetMapping("/login")
+    public String loginForm() {
+        return "login";
+    }
+
     @GetMapping("/registration")
     public String registrationForm(Model model) {
         model.addAttribute("user", new CreateUserRequest());
@@ -59,16 +64,12 @@ public class UserController {
     @GetMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     public String viewProfile(Model model) {
-        User loginUser = securityService.loginUser();
-        User user = userService.getUserById(loginUser.getId()).orElse(null);
-        UpdateUserRequest updateUserRequest = new UpdateUserRequest();
-        if (user != null) {
-            updateUserRequest.setName(user.getName());
-            updateUserRequest.setEmail(user.getEmail());
-            model.addAttribute("user", updateUserRequest);
-        } else {
-            model.addAttribute("user", updateUserRequest);
-        }
+        Long loginUserId = securityService.getLoginUserId();
+        var user = userService.getUserById(loginUserId).orElseThrow();
+        var updateUserRequest = new UpdateUserRequest();
+        updateUserRequest.setName(user.getName());
+        updateUserRequest.setEmail(user.getEmail());
+        model.addAttribute("user", updateUserRequest);
         return "profile";
     }
 
@@ -82,8 +83,8 @@ public class UserController {
             return "profile";
         }
         try {
-            User loginUser = securityService.loginUser();
-            User user = userService.getUserById(loginUser.getId()).orElse(null);
+            Long loginUserId = securityService.getLoginUserId();
+            var user = userService.getUserById(loginUserId).orElseThrow();
             user.setName(updateUserRequest.getName());
             userService.updateUser(user);
             redirectAttributes.addFlashAttribute("msg", "User updated successfully");
@@ -110,7 +111,7 @@ public class UserController {
             return "change-password";
         }
         try {
-            User loginUser = securityService.loginUser();
+            var loginUser = securityService.loginUser();
             userService.changePassword(
                     loginUser.getEmail(),
                     changePasswordRequest.getOldPassword(),

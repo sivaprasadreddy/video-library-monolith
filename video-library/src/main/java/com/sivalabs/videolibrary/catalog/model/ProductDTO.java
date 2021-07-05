@@ -1,4 +1,4 @@
-package com.sivalabs.videolibrary.catalog.web.dto;
+package com.sivalabs.videolibrary.catalog.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sivalabs.videolibrary.catalog.entity.Category;

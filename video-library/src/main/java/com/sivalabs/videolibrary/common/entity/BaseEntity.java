@@ -1,6 +1,5 @@
 package com.sivalabs.videolibrary.common.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -20,11 +19,9 @@ public abstract class BaseEntity implements Serializable {
         return 31;
     }
 
-    @JsonProperty("created_at")
     @Column(updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @JsonProperty("updated_at")
     @Column(insertable = false)
     private LocalDateTime updatedAt = LocalDateTime.now();
 

@@ -1,6 +1,5 @@
 package com.sivalabs.videolibrary.orders.service;
 
-import com.sivalabs.videolibrary.config.Loggable;
 import com.sivalabs.videolibrary.orders.entity.OrderedProduct;
 import com.sivalabs.videolibrary.orders.repository.OrderedProductRepository;
 import java.util.Optional;
@@ -13,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
-@Loggable
 public class ProductService {
     private final OrderedProductRepository productRepository;
 

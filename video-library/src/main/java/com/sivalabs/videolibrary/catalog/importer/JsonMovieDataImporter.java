@@ -23,7 +23,6 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class JsonMovieDataImporter {
-
     private final CatalogService catalogService;
     private final MovieRowMapper movieRowMapper;
     private final DataImportProperties dataImportProperties;

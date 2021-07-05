@@ -1,14 +1,14 @@
 package com.sivalabs.videolibrary.orders.web.controller;
 
-import com.sivalabs.videolibrary.config.Loggable;
+import com.sivalabs.videolibrary.common.logging.Loggable;
 import com.sivalabs.videolibrary.customers.service.SecurityService;
 import com.sivalabs.videolibrary.orders.entity.Order;
 import com.sivalabs.videolibrary.orders.entity.OrderItem;
 import com.sivalabs.videolibrary.orders.entity.OrderedProduct;
 import com.sivalabs.videolibrary.orders.model.Cart;
+import com.sivalabs.videolibrary.orders.model.CreateOrderRequest;
 import com.sivalabs.videolibrary.orders.model.LineItem;
 import com.sivalabs.videolibrary.orders.model.OrderConfirmationDTO;
-import com.sivalabs.videolibrary.orders.model.OrderDTO;
 import com.sivalabs.videolibrary.orders.service.OrderService;
 import com.sivalabs.videolibrary.orders.service.ProductService;
 import java.util.*;
@@ -26,12 +26,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequiredArgsConstructor
 @Loggable
 @Slf4j
-public class CartController {
+public class OrderController {
     public static final String CART_KEY = "CART_KEY";
 
+    private final OrderService orderService;
     private final ProductService productService;
     private final SecurityService securityService;
-    private final OrderService orderService;
 
     @GetMapping(value = "/cart")
     public String showCart(HttpServletRequest request, Model model) {
@@ -42,7 +42,7 @@ public class CartController {
 
     @PostMapping(value = "/cart/checkout")
     public String checkout(
-            @Valid @ModelAttribute("order") OrderDTO order,
+            @Valid @ModelAttribute("order") CreateOrderRequest order,
             BindingResult result,
             Model model,
             RedirectAttributes redirectAttributes,
@@ -53,7 +53,7 @@ public class CartController {
             model.addAttribute("order", order);
             return "cart";
         }
-        Long createdByUserId = securityService.getLoginUserId();
+
         Order newOrder = new Order();
         newOrder.setCustomerName(order.getCustomerName());
         newOrder.setCustomerEmail(order.getCustomerEmail());
@@ -73,7 +73,7 @@ public class CartController {
             items.add(orderItem);
         }
         newOrder.setItems(items);
-        newOrder.setCreatedBy(createdByUserId);
+        newOrder.setCreatedBy(securityService.getLoginUserId());
 
         OrderConfirmationDTO orderConfirmation = orderService.createOrder(newOrder);
         redirectAttributes.addFlashAttribute("orderConfirmation", orderConfirmation);

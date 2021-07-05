@@ -1,7 +1,6 @@
 package com.sivalabs.videolibrary.catalog.repository;
 
 import com.sivalabs.videolibrary.catalog.entity.Product;
-import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,6 +13,4 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findByCategory(@Param("categoryId") Long categoryId, Pageable pageable);
 
     Page<Product> findByTitleContainingIgnoreCase(String query, Pageable pageable);
-
-    Optional<Product> findByTmdbId(Long tmdbId);
 }

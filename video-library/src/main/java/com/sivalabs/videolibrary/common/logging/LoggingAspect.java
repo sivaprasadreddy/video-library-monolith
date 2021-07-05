@@ -1,30 +1,19 @@
-package com.sivalabs.videolibrary.config;
+package com.sivalabs.videolibrary.common.logging;
 
-import com.sivalabs.videolibrary.common.utils.Constants;
 import com.sivalabs.videolibrary.common.utils.TimeUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.Profiles;
 import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
+@Slf4j
 public class LoggingAspect {
-
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
-
-    private final Environment env;
-
-    public LoggingAspect(Environment env) {
-        this.env = env;
-    }
 
     @Pointcut(
             "within(@org.springframework.stereotype.Repository *)"
@@ -33,28 +22,19 @@ public class LoggingAspect {
     public void springBeanPointcut() {}
 
     @Pointcut(
-            "@within(com.sivalabs.videolibrary.config.Loggable) || "
-                    + "@annotation(com.sivalabs.videolibrary.config.Loggable)")
+            "@within(com.sivalabs.videolibrary.common.logging.Loggable) || "
+                    + "@annotation(com.sivalabs.videolibrary.common.logging.Loggable)")
     public void applicationPackagePointcut() {}
 
     @AfterThrowing(pointcut = "applicationPackagePointcut()", throwing = "e")
     public void logAfterThrowing(JoinPoint joinPoint, Throwable e) {
-        if (env.acceptsProfiles(Profiles.of(Constants.PROFILE_NOT_PROD))) {
-            log.error(
-                    "Exception in {}.{}() with cause = '{}' and exception = '{}'",
-                    joinPoint.getSignature().getDeclaringTypeName(),
-                    joinPoint.getSignature().getName(),
-                    e.getCause() != null ? e.getCause() : "NULL",
-                    e.getMessage(),
-                    e);
-
-        } else {
-            log.error(
-                    "Exception in {}.{}() with cause = {}",
-                    joinPoint.getSignature().getDeclaringTypeName(),
-                    joinPoint.getSignature().getName(),
-                    e.getCause() != null ? e.getCause() : "NULL");
-        }
+        log.error(
+                "Exception in {}.{}() with cause = '{}' and exception = '{}'",
+                joinPoint.getSignature().getDeclaringTypeName(),
+                joinPoint.getSignature().getName(),
+                e.getCause() != null ? e.getCause() : "NULL",
+                e.getMessage(),
+                e);
     }
 
     @Around("applicationPackagePointcut()")

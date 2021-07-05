@@ -13,7 +13,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class LineItem {
     private OrderedProduct product;
-
     private int quantity;
 
     public BigDecimal getSubTotal() {

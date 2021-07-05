@@ -4,10 +4,10 @@ import static org.springframework.data.domain.Sort.Direction.ASC;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
 import com.sivalabs.videolibrary.catalog.entity.Category;
+import com.sivalabs.videolibrary.catalog.mappers.ProductDTOMapper;
+import com.sivalabs.videolibrary.catalog.model.ProductDTO;
 import com.sivalabs.videolibrary.catalog.service.CatalogService;
-import com.sivalabs.videolibrary.catalog.web.dto.ProductDTO;
-import com.sivalabs.videolibrary.catalog.web.mappers.ProductDTOMapper;
-import com.sivalabs.videolibrary.config.Loggable;
+import com.sivalabs.videolibrary.common.logging.Loggable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,14 +31,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Slf4j
 @Loggable
 public class CatalogController {
-
     private final CatalogService catalogService;
     private final ProductDTOMapper productDTOMapper;
-
-    @GetMapping("/login")
-    public String loginForm() {
-        return "login";
-    }
 
     @GetMapping({"/"})
     public String home(

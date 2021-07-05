@@ -1,6 +1,6 @@
 package com.sivalabs.videolibrary.catalog.service;
 
-import static com.sivalabs.videolibrary.common.utils.Constants.PROFILE_IT;
+import static com.sivalabs.videolibrary.common.TestConstants.PROFILE_IT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sivalabs.videolibrary.catalog.repository.ProductRepository;

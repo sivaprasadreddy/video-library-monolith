@@ -2,14 +2,12 @@ package com.sivalabs.videolibrary.customers.service;
 
 import static com.sivalabs.videolibrary.common.utils.Constants.ROLE_ADMIN;
 
-import com.sivalabs.videolibrary.config.Loggable;
+import com.sivalabs.videolibrary.common.logging.Loggable;
 import com.sivalabs.videolibrary.customers.entity.User;
 import com.sivalabs.videolibrary.customers.model.SecurityUser;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -27,10 +25,10 @@ public class SecurityService {
         if (authentication.getPrincipal() instanceof SecurityUser) {
             SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
             return securityUser.getUser();
-        } else if (authentication instanceof UsernamePasswordAuthenticationToken) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            return userService.getUserByEmail(userDetails.getUsername()).orElse(null);
-        }
+        } /*else if (authentication instanceof UsernamePasswordAuthenticationToken) {
+              UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+              return userService.getUserByEmail(userDetails.getUsername()).orElse(null);
+          }*/
         return null;
     }
 

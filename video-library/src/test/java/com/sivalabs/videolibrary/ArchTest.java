@@ -1,7 +1,6 @@
 package com.sivalabs.videolibrary;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
-import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
@@ -17,64 +16,58 @@ class ArchTest {
                     .importPackages("com.sivalabs.videolibrary");
 
     @Test
-    void servicesAndRepositoriesShouldNotDependOnWebLayer() {
+    void checkModuleBoundaries() {
 
         noClasses()
                 .that()
-                .resideInAnyPackage("com.sivalabs.videolibrary.core.service..")
-                .or()
-                .resideInAnyPackage("com.sivalabs.videolibrary.core.repository..")
+                .resideInAnyPackage("com.sivalabs.videolibrary.common..")
                 .should()
                 .dependOnClassesThat()
-                .resideInAnyPackage("com.sivalabs.videolibrary.catalog.web..")
-                .because("Services and repositories should not depend on web layer")
+                .resideInAnyPackage(
+                        "com.sivalabs.videolibrary.config..",
+                        "com.sivalabs.videolibrary.catalog..",
+                        "com.sivalabs.videolibrary.customers..",
+                        "com.sivalabs.videolibrary.orders..")
+                .because("Common classes should not depend on other modules")
+                .check(importedClasses);
+
+        noClasses()
+                .that()
+                .resideInAnyPackage("com.sivalabs.videolibrary.catalog..")
+                .should()
+                .dependOnClassesThat()
+                .resideInAnyPackage(
+                        "com.sivalabs.videolibrary.config..",
+                        "com.sivalabs.videolibrary.customers..",
+                        "com.sivalabs.videolibrary.orders..")
+                .because("Catalog classes should not depend on config, catalog, order modules")
+                .check(importedClasses);
+
+        noClasses()
+                .that()
+                .resideInAnyPackage("com.sivalabs.videolibrary.customers..")
+                .should()
+                .dependOnClassesThat()
+                .resideInAnyPackage(
+                        "com.sivalabs.videolibrary.config..",
+                        "com.sivalabs.videolibrary.catalog..",
+                        "com.sivalabs.videolibrary.orders..")
+                .because("Customers classes should not depend on config, catalog, order modules")
+                .check(importedClasses);
+
+        noClasses()
+                .that()
+                .resideInAnyPackage("com.sivalabs.videolibrary.orders..")
+                .should()
+                .dependOnClassesThat()
+                .resideInAnyPackage("com.sivalabs.videolibrary.config..")
+                .because("Orders classes should not depend on config module")
                 .check(importedClasses);
     }
 
     @Test
     void shouldNotUseFieldInjection() {
         noFields().should().beAnnotatedWith(Autowired.class).check(importedClasses);
-    }
-
-    @Test
-    void shouldFollowLayeredArchitecture() {
-        layeredArchitecture()
-                .layer("Config")
-                .definedBy("..config..")
-                .layer("Jobs")
-                .definedBy("..jobs..")
-                .layer("Importer")
-                .definedBy("..importer..")
-                .layer("Web")
-                .definedBy("..web..")
-                .layer("Service")
-                .definedBy("..service..")
-                .layer("Persistence")
-                .definedBy("..repository..")
-                .whereLayer("Web")
-                .mayNotBeAccessedByAnyLayer()
-                .whereLayer("Service")
-                .mayOnlyBeAccessedByLayers("Config", "Importer", "Jobs", "Web")
-                .whereLayer("Persistence")
-                .mayOnlyBeAccessedByLayers("Service")
-                .check(importedClasses);
-    }
-
-    @Test
-    void shouldFollowNamingConvention() {
-        classes()
-                .that()
-                .resideInAPackage("com.sivalabs.videolibrary.core.repository")
-                .should()
-                .haveSimpleNameEndingWith("Repository")
-                .check(importedClasses);
-
-        classes()
-                .that()
-                .resideInAPackage("com.sivalabs.videolibrary.core.service")
-                .should()
-                .haveSimpleNameEndingWith("Service")
-                .check(importedClasses);
     }
 
     @Test

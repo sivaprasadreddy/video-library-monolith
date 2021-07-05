@@ -1,6 +1,5 @@
 package com.sivalabs.videolibrary.orders.model;
 
-import java.io.Serializable;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import lombok.Getter;
@@ -8,9 +7,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class OrderDTO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class CreateOrderRequest {
 
     @NotEmpty(message = "Customer Name is required")
     private String customerName;

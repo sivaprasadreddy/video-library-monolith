@@ -7,8 +7,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import com.sivalabs.videolibrary.catalog.entity.Product;
+import com.sivalabs.videolibrary.catalog.mappers.ProductDTOMapper;
 import com.sivalabs.videolibrary.catalog.service.CatalogService;
-import com.sivalabs.videolibrary.catalog.web.mappers.ProductDTOMapper;
 import com.sivalabs.videolibrary.common.AbstractMvcUnitTest;
 import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
