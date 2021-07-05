@@ -1,4 +1,4 @@
-package com.sivalabs.videolibrary.orders.web.dto;
+package com.sivalabs.videolibrary.orders.model;
 
 import com.sivalabs.videolibrary.orders.entity.OrderedProduct;
 import java.math.BigDecimal;

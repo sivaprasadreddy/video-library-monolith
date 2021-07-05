@@ -34,6 +34,11 @@ public class SecurityService {
         return null;
     }
 
+    public Long getLoginUserId() {
+        User user = loginUser();
+        return user == null ? null : user.getId();
+    }
+
     public boolean isCurrentUserAdmin() {
         User loginUser = loginUser();
         if (loginUser != null) {

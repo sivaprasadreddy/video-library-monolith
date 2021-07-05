@@ -1,4 +1,4 @@
-package com.sivalabs.videolibrary.orders.web.dto;
+package com.sivalabs.videolibrary.orders.model;
 
 import java.io.Serializable;
 import javax.validation.constraints.Email;

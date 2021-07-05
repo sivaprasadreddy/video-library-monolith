@@ -33,7 +33,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class CatalogController {
 
     private final CatalogService catalogService;
-
     private final ProductDTOMapper productDTOMapper;
 
     @GetMapping("/login")
@@ -87,13 +86,14 @@ public class CatalogController {
                     Pageable pageable,
             Model model) {
         log.info("Fetching products by category: {} with page: {}", slug, pageable.getPageNumber());
-        Optional<Category> byId = catalogService.findCategoryBySlug(slug);
-        if (byId.isPresent()) {
+        Optional<Category> optionalCategory = catalogService.findCategoryBySlug(slug);
+        if (optionalCategory.isPresent()) {
             Page<ProductDTO> data =
                     catalogService
-                            .findProductsByCategory(byId.get().getId(), pageable)
+                            .findProductsByCategory(optionalCategory.get().getId(), pageable)
                             .map(productDTOMapper::map);
-            model.addAttribute("header", "Products by Category \"" + byId.get().getName() + "\"");
+            model.addAttribute(
+                    "header", "Products by Category \"" + optionalCategory.get().getName() + "\"");
             model.addAttribute("productsData", data);
             model.addAttribute("page", data.getNumber() + 1);
         } else {

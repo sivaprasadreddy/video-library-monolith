@@ -23,11 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Loggable
 public class UserService {
-
     private final UserRepository userRepository;
-
     private final RoleRepository roleRepository;
-
     private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
@@ -45,25 +42,19 @@ public class UserService {
             throw new ApplicationException("Email " + user.getEmail() + " is already in use");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Optional<com.sivalabs.videolibrary.customers.entity.Role> roleUser =
-                roleRepository.findByName(ROLE_USER);
+        Optional<Role> roleUser = roleRepository.findByName(ROLE_USER);
         user.setRoles(Collections.singletonList(roleUser.orElse(null)));
         return userRepository.save(user);
     }
 
     public User updateUser(User user) {
-        Optional<User> byId = userRepository.findById(user.getId());
-        if (byId.isEmpty()) {
+        Optional<User> userOptional = userRepository.findById(user.getId());
+        if (userOptional.isEmpty()) {
             throw new UserNotFoundException("User with id " + user.getId() + " not found");
         }
-        user.setRoles(byId.get().getRoles());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
-    }
-
-    public void deleteUser(Long userId) {
-        Optional<User> byId = userRepository.findById(userId);
-        byId.ifPresent(userRepository::delete);
+        User existingUser = userOptional.get();
+        existingUser.setName(user.getName());
+        return userRepository.save(existingUser);
     }
 
     public void changePassword(String email, String oldPwd, String newPwd) {
@@ -78,9 +69,5 @@ public class UserService {
         } else {
             throw new ApplicationException("Current password doesn't match");
         }
-    }
-
-    public Optional<Role> findRoleByName(String roleName) {
-        return roleRepository.findByName(roleName);
     }
 }

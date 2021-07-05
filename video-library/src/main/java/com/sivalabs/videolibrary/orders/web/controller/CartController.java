@@ -1,17 +1,16 @@
 package com.sivalabs.videolibrary.orders.web.controller;
 
 import com.sivalabs.videolibrary.config.Loggable;
-import com.sivalabs.videolibrary.customers.entity.User;
 import com.sivalabs.videolibrary.customers.service.SecurityService;
 import com.sivalabs.videolibrary.orders.entity.Order;
 import com.sivalabs.videolibrary.orders.entity.OrderItem;
 import com.sivalabs.videolibrary.orders.entity.OrderedProduct;
+import com.sivalabs.videolibrary.orders.model.Cart;
+import com.sivalabs.videolibrary.orders.model.LineItem;
 import com.sivalabs.videolibrary.orders.model.OrderConfirmationDTO;
+import com.sivalabs.videolibrary.orders.model.OrderDTO;
 import com.sivalabs.videolibrary.orders.service.OrderService;
 import com.sivalabs.videolibrary.orders.service.ProductService;
-import com.sivalabs.videolibrary.orders.web.dto.Cart;
-import com.sivalabs.videolibrary.orders.web.dto.LineItem;
-import com.sivalabs.videolibrary.orders.web.dto.OrderDTO;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -28,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Loggable
 @Slf4j
 public class CartController {
+    public static final String CART_KEY = "CART_KEY";
 
     private final ProductService productService;
     private final SecurityService securityService;
@@ -53,7 +53,7 @@ public class CartController {
             model.addAttribute("order", order);
             return "cart";
         }
-        User user = securityService.loginUser();
+        Long createdByUserId = securityService.getLoginUserId();
         Order newOrder = new Order();
         newOrder.setCustomerName(order.getCustomerName());
         newOrder.setCustomerEmail(order.getCustomerEmail());
@@ -66,19 +66,19 @@ public class CartController {
         for (LineItem lineItem : cart.getItems()) {
             OrderItem orderItem = new OrderItem();
             orderItem.setOrder(newOrder);
-            orderItem.setProductCode("" + lineItem.getProduct().getTmdbId());
+            orderItem.setProductCode(String.valueOf(lineItem.getProduct().getTmdbId()));
             orderItem.setProductName(lineItem.getProduct().getTitle());
             orderItem.setProductPrice(lineItem.getProduct().getPrice());
             orderItem.setQuantity(lineItem.getQuantity());
             items.add(orderItem);
         }
         newOrder.setItems(items);
-        newOrder.setCreatedBy(user.getId());
+        newOrder.setCreatedBy(createdByUserId);
 
         OrderConfirmationDTO orderConfirmation = orderService.createOrder(newOrder);
         redirectAttributes.addFlashAttribute("orderConfirmation", orderConfirmation);
 
-        request.getSession().removeAttribute("CART_KEY");
+        request.getSession().removeAttribute(CART_KEY);
 
         return "redirect:/orders/" + orderConfirmation.getOrderId();
     }
@@ -147,10 +147,10 @@ public class CartController {
     }
 
     Cart getOrCreateCart(HttpServletRequest request) {
-        Cart cart = (Cart) request.getSession().getAttribute("CART_KEY");
+        Cart cart = (Cart) request.getSession().getAttribute(CART_KEY);
         if (cart == null) {
             cart = new Cart();
-            request.getSession().setAttribute("CART_KEY", cart);
+            request.getSession().setAttribute(CART_KEY, cart);
         }
         return cart;
     }
