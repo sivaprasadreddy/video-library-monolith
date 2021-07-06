@@ -19,11 +19,49 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>11</java.version>
+		<spotless.version>2.7.0</spotless.version>
 	</properties>
 
 	<modules>
+		<module>common</module>
+		<module>catalog</module>
+		<module>customers</module>
+		<module>orders</module>
 		<module>video-library</module>
-		<module>video-library-gatling-tests</module>
 	</modules>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.diffplug.spotless</groupId>
+				<artifactId>spotless-maven-plugin</artifactId>
+				<version>${spotless.version}</version>
+				<configuration>
+					<java>
+						<googleJavaFormat>
+							<version>1.8</version>
+							<style>AOSP</style>
+						</googleJavaFormat>
+					</java>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<profiles>
+		<profile>
+			<id>perf</id>
+			<modules>
+				<module>video-library-gatling-tests</module>
+			</modules>
+		</profile>
+	</profiles>
 
 </project>
