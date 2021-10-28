@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: video-library-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: video-library-pod
+  ports:
+    - name: app-port-mapping
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: video-library-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: video-library-pod
+  template:
+    metadata:
+      labels:
+        app: video-library-pod
+    spec:
+      containers:
+        - name: video-library
+          image: sivaprasadreddy/video-library
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: k8s
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: video-library-configmap
+                  key: postgres_host
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: video-library-configmap
+                  key: postgres_port
+            - name: DB_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: video-library-configmap
+                  key: postgres_database
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: video-library-secrets
+                  key: postgres_username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: video-library-secrets
+                  key: postgres_password
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 30
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "sh", "-c", "sleep 10" ]
+          volumeMounts:
+            - name: config-volume
+              mountPath: /workspace/config
+      volumes:
+        - name: config-volume
+          configMap:
+            name: video-library-configmap

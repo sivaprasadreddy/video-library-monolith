@@ -55,4 +55,8 @@ public class OrderService {
     public void updateOrder(Order order) {
         orderRepository.save(order);
     }
+
+    public List<Order> findOrdersByUserId(Long userId) {
+        return this.orderRepository.findByCreatedBy(userId);
+    }
 }

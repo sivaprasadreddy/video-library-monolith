@@ -7,7 +7,7 @@
 
 	<groupId>com.sivalabs</groupId>
 	<artifactId>video-library-gatling-tests</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>video-library-gatling-tests</name>
 
 	<properties>

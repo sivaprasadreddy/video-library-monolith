@@ -1,21 +1,25 @@
 package com.sivalabs.videolibrary.orders.web.controller;
 
+import static com.sivalabs.videolibrary.orders.web.utils.CartUtils.clearCart;
+import static com.sivalabs.videolibrary.orders.web.utils.CartUtils.getOrCreateCart;
+
+import com.sivalabs.videolibrary.common.exception.AccessDeniedException;
+import com.sivalabs.videolibrary.common.exception.ResourceNotFoundException;
 import com.sivalabs.videolibrary.common.logging.Loggable;
 import com.sivalabs.videolibrary.customers.service.SecurityService;
 import com.sivalabs.videolibrary.orders.entity.Order;
 import com.sivalabs.videolibrary.orders.entity.OrderItem;
-import com.sivalabs.videolibrary.orders.entity.OrderedProduct;
 import com.sivalabs.videolibrary.orders.model.Cart;
 import com.sivalabs.videolibrary.orders.model.CreateOrderRequest;
 import com.sivalabs.videolibrary.orders.model.LineItem;
 import com.sivalabs.videolibrary.orders.model.OrderConfirmationDTO;
 import com.sivalabs.videolibrary.orders.service.OrderService;
-import com.sivalabs.videolibrary.orders.service.ProductService;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,21 +31,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Loggable
 @Slf4j
 public class OrderController {
-    public static final String CART_KEY = "CART_KEY";
-
     private final OrderService orderService;
-    private final ProductService productService;
     private final SecurityService securityService;
 
-    @GetMapping(value = "/cart")
-    public String showCart(HttpServletRequest request, Model model) {
-        Cart cart = getOrCreateCart(request);
-        model.addAttribute("cart", cart);
-        return "cart";
-    }
-
     @PostMapping(value = "/cart/checkout")
-    public String checkout(
+    @PreAuthorize("isAuthenticated()")
+    public String placeOrder(
             @Valid @ModelAttribute("order") CreateOrderRequest order,
             BindingResult result,
             Model model,
@@ -78,80 +73,31 @@ public class OrderController {
         OrderConfirmationDTO orderConfirmation = orderService.createOrder(newOrder);
         redirectAttributes.addFlashAttribute("orderConfirmation", orderConfirmation);
 
-        request.getSession().removeAttribute(CART_KEY);
+        clearCart(request);
 
         return "redirect:/orders/" + orderConfirmation.getOrderId();
     }
 
     @GetMapping(value = "/orders/{orderId}")
+    @PreAuthorize("isAuthenticated()")
     public String viewOrder(@PathVariable(value = "orderId") String orderId, Model model) {
         Order order = orderService.findOrderByOrderId(orderId).orElse(null);
+        if (order == null) {
+            throw new ResourceNotFoundException("Order with Id :" + orderId + " not found");
+        }
+        if (!Objects.equals(order.getCreatedBy(), securityService.getLoginUserId())) {
+            throw new AccessDeniedException();
+        }
         model.addAttribute("order", order);
         return "order";
     }
 
-    @GetMapping(value = "/cart/items/count")
-    @ResponseBody
-    public Map<String, Object> getCartItemCount(HttpServletRequest request) {
-        Cart cart = getOrCreateCart(request);
-        int itemCount = cart.getItemCount();
-        Map<String, Object> map = new HashMap<>();
-        map.put("count", itemCount);
-        return map;
-    }
-
-    @PostMapping(value = "/cart/items")
-    @ResponseBody
-    public Cart addToCart(@RequestBody OrderedProduct product, HttpServletRequest request) {
-        log.info("Add tmdbId: {} to cart", product.getTmdbId());
-        Cart cart = getOrCreateCart(request);
-        OrderedProduct item = productService.findProductByCode(product.getTmdbId()).orElse(null);
-        log.info("Adding product: {}", item.getTmdbId());
-        cart.addItem(item);
-        return cart;
-    }
-
-    @PutMapping(value = "/cart/items")
-    @ResponseBody
-    public Cart updateCartItem(@RequestBody LineItem item, HttpServletRequest request) {
-        log.info(
-                "Update cart line item tmdbId: {}, quantity: {} ",
-                item.getProduct().getTmdbId(),
-                item.getQuantity());
-        Cart cart = getOrCreateCart(request);
-        if (item.getQuantity() <= 0) {
-            Long tmdbId = item.getProduct().getTmdbId();
-            cart.removeItem(tmdbId);
-        } else {
-            cart.updateItemQuantity(item.getProduct(), item.getQuantity());
-        }
-        return cart;
-    }
-
-    @DeleteMapping(value = "/cart/items/{tmdbId}")
-    @ResponseBody
-    public Cart removeCartItem(@PathVariable("tmdbId") Long tmdbId, HttpServletRequest request) {
-        log.info("Remove cart line item tmdbId: {}", tmdbId);
-        Cart cart = getOrCreateCart(request);
-        cart.removeItem(tmdbId);
-        return cart;
-    }
-
-    @DeleteMapping(value = "/cart")
-    @ResponseBody
-    public Cart clearCart(HttpServletRequest request) {
-        log.info("Clear cart");
-        Cart cart = getOrCreateCart(request);
-        cart.setItems(new ArrayList<>(0));
-        return cart;
-    }
-
-    Cart getOrCreateCart(HttpServletRequest request) {
-        Cart cart = (Cart) request.getSession().getAttribute(CART_KEY);
-        if (cart == null) {
-            cart = new Cart();
-            request.getSession().setAttribute(CART_KEY, cart);
-        }
-        return cart;
+    @GetMapping(value = "/orders")
+    @PreAuthorize("isAuthenticated()")
+    public String getUserOrders(Model model) {
+        Long userId = securityService.getLoginUserId();
+        List<Order> orders = orderService.findOrdersByUserId(userId);
+        model.addAttribute("orders", orders);
+        return "user-orders";
     }
 }
