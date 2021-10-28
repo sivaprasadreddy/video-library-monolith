@@ -31,7 +31,8 @@ function stop() {
 
 function start_all() {
     echo "Starting ${videolibrary} and dependencies...."
-    build_docker_image
+    #build_docker_image
+    build_api
     docker-compose -f ${dc_main} -f ${dc_monitoring} up --build --force-recreate -d
     docker-compose -f ${dc_main} -f ${dc_monitoring} logs -f
 
@@ -49,11 +50,11 @@ function stop_all() {
 }
 
 function build_docker_image() {
-    ./mvnw spring-boot:build-image -DskipTests
+    ./mvnw spring-boot:build-image -DskipTests -pl video-library
 }
 
 function build_api() {
-    ./mvnw clean package -DskipTests
+    ./mvnw clean package -DskipTests -pl video-library
 }
 
 function sonar() {
