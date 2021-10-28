@@ -1,8 +1,8 @@
 package com.sivalabs.videolibrary.config.security;
 
-import com.sivalabs.videolibrary.core.entity.User;
-import com.sivalabs.videolibrary.core.model.SecurityUser;
-import com.sivalabs.videolibrary.core.service.UserService;
+import com.sivalabs.videolibrary.customers.entity.User;
+import com.sivalabs.videolibrary.customers.model.SecurityUser;
+import com.sivalabs.videolibrary.customers.service.UserService;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

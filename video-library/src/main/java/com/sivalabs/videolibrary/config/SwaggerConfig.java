@@ -23,8 +23,8 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 // .apis(RequestHandlerSelectors.any())
-                .apis(RequestHandlerSelectors.basePackage("com.sivalabs.videolibrary.web.api"))
                 // .paths(PathSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("com.sivalabs.videolibrary"))
                 .paths(PathSelectors.ant("/api/**"))
                 .build()
                 .apiInfo(apiInfo());

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: video-library-configmap
+data:
+  postgres_host: video-library-postgres-svc
+  postgres_port: "5432"
+  postgres_database: videolibrarydb
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: video-library-secrets
+type: Opaque
+data:
+  postgres_username: c2l2YQ== # siva
+  postgres_password: c2l2YWxhYnM= # sivalabs
+---

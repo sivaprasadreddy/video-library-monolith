@@ -1,8 +1,12 @@
 package com.sivalabs.videolibrary.datafactory;
 
-import static com.sivalabs.videolibrary.importer.MovieRowMapperUtils.toSlug;
+import static com.sivalabs.videolibrary.common.utils.CommonUtils.toSlug;
 
-import com.sivalabs.videolibrary.core.entity.*;
+import com.sivalabs.videolibrary.catalog.entity.Category;
+import com.sivalabs.videolibrary.catalog.entity.Product;
+import com.sivalabs.videolibrary.customers.entity.User;
+import com.sivalabs.videolibrary.orders.entity.Order;
+import com.sivalabs.videolibrary.orders.entity.OrderItem;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -30,20 +34,20 @@ public class TestDataFactory {
         return user;
     }
 
-    public static Movie createMovie(String title, String... genreNames) {
-        Movie movie = new Movie();
-        movie.setTitle(title);
-        movie.setGenres(
-                Arrays.stream(genreNames)
+    public static Product createProduct(String title, String... categories) {
+        Product product = new Product();
+        product.setTitle(title);
+        product.setCategories(
+                Arrays.stream(categories)
                         .map(
                                 g -> {
-                                    Genre genre = new Genre();
-                                    genre.setName(g);
-                                    genre.setSlug(toSlug(g));
-                                    return genre;
+                                    Category category = new Category();
+                                    category.setName(g);
+                                    category.setSlug(toSlug(g));
+                                    return category;
                                 })
                         .collect(Collectors.toSet()));
-        return movie;
+        return product;
     }
 
     public static Order createOrder(Long id) {
@@ -63,7 +67,7 @@ public class TestDataFactory {
 
         User createdBy = new User();
         createdBy.setId(1L);
-        order.setCreatedBy(createdBy);
+        order.setCreatedBy(createdBy.getId());
         return order;
     }
 

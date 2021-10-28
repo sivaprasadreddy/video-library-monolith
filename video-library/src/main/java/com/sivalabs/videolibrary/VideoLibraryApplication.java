@@ -1,6 +1,6 @@
 package com.sivalabs.videolibrary;
 
-import com.sivalabs.videolibrary.importer.DataImportProperties;
+import com.sivalabs.videolibrary.catalog.importer.DataImportProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

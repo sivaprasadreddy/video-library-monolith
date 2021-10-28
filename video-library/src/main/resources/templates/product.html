@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{mainLayout}">
+<head>
+    <title>Product</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="row">
+        <div class="col-md-9">
+            <div>
+                <h3
+                    th:text="${product.title}">product.title</h3>
+                <img th:src="${product.posterPath}"  alt="Product"
+                     onerror="this.onerror=null; this.src='/images/image-not-found.png'"
+                     height="400" width="300">
+            </div>
+            <div class="pt-3">
+                <h3>Tagline</h3>
+                <p th:text="${product.tagline}">product.tagline</p>
+            </div>
+            <div class="pt-3">
+                <p th:text="${'Released Date:'+ product.releaseDate}">product.releaseDate</p>
+                <p th:text="${'Budget:'+ product.budget}">product.budget</p>
+                <p th:text="${'Runtime:'+ product.runtime}">product.runtime</p>
+                <p th:text="${'Original Language:'+ product.originalLanguage}">product.originalLanguage</p>
+            </div>
+            <div class="pt-3">
+                <button class="btn btn-primary" th:onclick="'javascript:addItemToCart(\'' + ${product.tmdbId} + '\');'">
+                Add to Cart
+                </button>
+            </div>
+            <div class="pt-3">
+                <h3>Overview</h3>
+                <p th:text="${product.overview}">product.overview</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div layout:fragment="pageScripts">
+</div>
+</body>
+</html>

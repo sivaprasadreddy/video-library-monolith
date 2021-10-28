@@ -1,0 +1,16 @@
+apiVersion: skaffold/v2beta14
+kind: Config
+metadata:
+  name: video-library-monolith
+build:
+  artifacts:
+    - image: sivaprasadreddy/video-library
+      context: ./video-library
+      jib: {}
+      #buildpacks:
+      #  builder: paketobuildpacks/builder:base
+
+deploy:
+  kubectl:
+    manifests:
+      - k8s/*.yaml
