@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     public String handleAccessDeniedException(AccessDeniedException e) {
         log.error(e.getMessage(), e);
-        return "401";
+        return "403";
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
