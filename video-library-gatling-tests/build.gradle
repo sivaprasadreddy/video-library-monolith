@@ -1,5 +1,5 @@
 plugins {
-    id 'scala'
+    id 'java'
     id 'io.gatling.gradle' version '3.8.2'
 }
 
@@ -13,4 +13,6 @@ gatling {
     logHttp = 'NONE' // set to 'ALL' for all HTTP traffic in TRACE, 'FAILURES' for failed HTTP traffic in DEBUG
 }
 
-
+dependencies {
+    gatling "org.apache.commons:commons-lang3:3.12.0"
+}
