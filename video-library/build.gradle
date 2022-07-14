@@ -1,0 +1,161 @@
+
+plugins {
+    id 'java-library'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+    id "com.gorylenko.gradle-git-properties"
+    id "com.github.sherter.google-java-format"
+    id "com.google.cloud.tools.jib"
+    id "org.sonarqube" apply false
+}
+
+apply plugin: 'idea'
+apply from: 'gradle/static-checks.gradle'
+
+group = 'com.sivalabs'
+version = '0.0.1'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+
+    implementation 'org.flywaydb:flyway-core'
+    compileOnly 'org.projectlombok:lombok'
+    testImplementation 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'org.postgresql:postgresql'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    implementation "org.webjars:bootstrap:${bootstrap_version}"
+    implementation "org.webjars:jquery:${jquery_version}"
+    implementation "org.webjars:font-awesome:${font_awesome_version}"
+    implementation "org.springdoc:springdoc-openapi-ui:${swagger_version}"
+
+    implementation "org.apache.commons:commons-lang3:${commons_lang_version}"
+    implementation "commons-io:commons-io:${commons_io_version}"
+    implementation "com.opencsv:opencsv:${opencsv_version}"
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.testcontainers:junit-jupiter"
+    testImplementation "org.testcontainers:postgresql"
+    testImplementation "com.tngtech.archunit:archunit-junit5:${archunit_junit5_version}"
+    testImplementation 'net.datafaker:datafaker:1.4.0'
+    testImplementation 'org.seleniumhq.selenium:selenium-java:3.141.59'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${spring_cloud_version}"
+        mavenBom "org.testcontainers:testcontainers-bom:${testcontainers_version}"
+    }
+}
+
+springBoot {
+    buildInfo()
+}
+
+bootJar {
+    //launchScript()
+}
+
+bootBuildImage {
+    imageName = "sivaprasadreddy/video-library"
+}
+
+jib {
+    from {
+        image = 'eclipse-temurin:17-jre-focal'
+    }
+    to {
+        image = 'sivaprasadreddy/video-library'
+        tags = ['latest']
+    }
+    container {
+        jvmFlags = ['-Xms512m', '-Xdebug']
+        mainClass = 'com.sivalabs.videolibrary.VideoLibraryApplication'
+        args = []
+        ports = ['8080/tcp']
+    }
+}
+
+compileJava.dependsOn processResources
+processResources.dependsOn bootBuildInfo
+
+bootRun {
+    args = ["--spring.profiles.active=default"]
+}
+
+gitProperties {
+    failOnNoGitDirectory = false
+    keys = ["git.branch", "git.commit.id.abbrev", "git.commit.user.name", "git.commit.message.full"]
+}
+
+googleJavaFormat {
+    toolVersion = '1.12.0'
+    options style: 'AOSP'
+}
+
+check.dependsOn verifyGoogleJavaFormat
+
+test {
+    useJUnitPlatform()
+    exclude "**/*IT*", "**/*IntegrationTest*", "**/*IntTest*"
+    testLogging {
+        events = ["PASSED", "FAILED", "SKIPPED"]
+        //showStandardStreams = true
+        exceptionFormat = "full"
+    }
+}
+
+task integrationTest(type: Test) {
+    useJUnitPlatform()
+
+    include "**/*IT*", "**/*IntegrationTest*", "**/*IntTest*"
+    shouldRunAfter test
+
+    testLogging {
+        events = ["PASSED", "FAILED", "SKIPPED"]
+        //showStandardStreams = true
+        exceptionFormat = "full"
+    }
+}
+
+check.dependsOn integrationTest
+
+task testReport(type: TestReport) {
+    destinationDirectory = file("$buildDir/reports/tests")
+    reportOn test
+
+}
+
+task integrationTestReport(type: TestReport) {
+    destinationDirectory = file("$buildDir/reports/tests")
+    reportOn integrationTest
+}
+

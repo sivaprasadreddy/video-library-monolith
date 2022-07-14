@@ -1,13 +1,13 @@
 #!/bin/bash
 
-declare jar_name='videolibrary/target/videolibrary-0.0.1-SNAPSHOT.jar'
+declare jar_name='videolibrary/build/libs/videolibrary-0.0.1.jar'
 
 function build_docker_image() {
-    ./mvnw spring-boot:build-image -DskipTests
+    ./gradlew :video-library:jibDockerBuild
 }
 
 function build_api() {
-    ./mvnw clean package -DskipTests
+    ./gradlew :video-library:build
 }
 
 function start() {

@@ -11,9 +11,12 @@ declare sonarqube="sonarqube"
 declare elk="elasticsearch logstash kibana"
 declare monitoring="prometheus grafana"
 
-function restart() {
-    stop
-    start
+function build_docker_image() {
+    ./gradlew :video-library:jibDockerBuild
+}
+
+function build_api() {
+    ./gradlew :video-library:build
 }
 
 function start() {
@@ -27,6 +30,11 @@ function stop() {
     echo "Stopping ${videolibrary}...."
     docker-compose -f ${dc_main} stop
     docker-compose -f ${dc_main} rm -f
+}
+
+function restart() {
+    stop
+    start
 }
 
 function start_all() {
@@ -47,14 +55,6 @@ function stop_all() {
 
     #docker-compose -f ${dc_main} -f ${dc_elk} -f ${dc_monitoring} stop
     #docker-compose -f ${dc_main} -f ${dc_elk} -f ${dc_monitoring} rm -f
-}
-
-function build_docker_image() {
-    ./mvnw spring-boot:build-image -DskipTests -pl video-library
-}
-
-function build_api() {
-    ./mvnw clean package -DskipTests -pl video-library
 }
 
 function sonar() {

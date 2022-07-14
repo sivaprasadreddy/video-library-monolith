@@ -1,0 +1,27 @@
+name: CI Build
+
+on:
+  push:
+    branches:
+      - 'main'
+jobs:
+  build:
+    name: Gradle Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        distribution: [ 'temurin' ]
+        java: [ '17', '18' ]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Java ${{ matrix.java }} (${{ matrix.distribution }})
+        uses: actions/setup-java@v3
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: ${{ matrix.distribution }}
+          cache: 'gradle'
+
+      - name: Build with Gradle
+        run: ./gradlew build
+

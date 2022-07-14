@@ -9,5 +9,15 @@ Video Library application following monolithic architecture using SpringBoot
 * Spring Security 
 * Thymeleaf
 * Flyway
-* Maven
+* Gradle
 * JUnit 5, Mockito, Testcontainers
+
+```shell
+./gradlew :video-library:bootRun
+```
+
+## Gatling Performance Testing
+
+```shell
+./gradlew :video-library-gatling-tests:gatlingRun
+```
