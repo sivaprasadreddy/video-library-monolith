@@ -15,8 +15,8 @@
                 <div class="card">
                     <div class="card-header" id="orderId" th:id="${order.orderId}">
                         <h5 class="mb-0">
-                            <button class="btn btn-link" data-toggle="collapse"
-                                    th:data-target="${'#collapse'+ order.orderId}"
+                            <button class="btn btn-link" data-bs-toggle="collapse"
+                                    th:data-bs-target="${'#collapse'+ order.orderId}"
                                     aria-expanded="false" th:aria-controls="${'collapse'+ order.orderId}">
                                 <h4>
                                     Order Id: <span th:text="${order.orderId}">OrderId</span>
@@ -57,23 +57,22 @@
                                 </tfoot>
                             </table>
                             <form>
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">Customer Name</label>
-                                    <div class="col-sm-10">
-                                        <input
-                                                type="text"
-                                                class="form-control"
-                                                name="customerName"
-                                                readonly="readonly"
-                                                value=""
-                                                th:value="${order.customerName}"
-                                        />
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">Customer Email</label>
-                                    <div class="col-sm-10">
+                                <div class="mb-3">
+                                    <label for="customerName" class="control-label">Customer Name</label>
                                     <input
+                                            id="customerName"
+                                            type="text"
+                                            class="form-control"
+                                            name="customerName"
+                                            readonly="readonly"
+                                            value=""
+                                            th:value="${order.customerName}"
+                                    />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="control-label">Customer Email</label>
+                                    <input
+                                            id="email"
                                             type="email"
                                             class="form-control"
                                             name="customerEmail"
@@ -81,11 +80,9 @@
                                             value=""
                                             th:value="${order.customerEmail}"
                                     />
-                                    </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">Delivery Address</label>
-                                    <div class="col-sm-10">
+                                <div class="mb-3">
+                                    <label for="deliveryAddress" class="control-label">Delivery Address</label>
                                     <input
                                             type="text"
                                             class="form-control"
@@ -95,7 +92,6 @@
                                             value=""
                                             th:value="${order.deliveryAddress}"
                                     />
-                                    </div>
                                 </div>
                             </form>
                         </div>
