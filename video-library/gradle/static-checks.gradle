@@ -1,7 +1,7 @@
 apply plugin: 'jacoco'
 apply plugin: "org.sonarqube"
 
-def jacocoMinCoverageRequired = 0.40
+def jacocoMinCoverageRequired = 0.30
 
 jacoco {
     toolVersion = "0.8.7"
