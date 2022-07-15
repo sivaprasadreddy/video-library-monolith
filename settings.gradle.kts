@@ -1,2 +1,2 @@
-rootProject.name = 'video-library-monolith'
-include('video-library', 'video-library-gatling-tests')
+rootProject.name = "video-library-monolith"
+include("video-library", "video-library-gatling-tests")
