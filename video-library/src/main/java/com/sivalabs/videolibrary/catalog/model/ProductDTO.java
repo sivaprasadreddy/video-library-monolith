@@ -12,21 +12,14 @@ import org.apache.commons.lang3.StringUtils;
 @Data
 @Builder
 public class ProductDTO {
-
     private Long id;
-
     private String title;
 
     @JsonProperty("tmdb_id")
     private Long tmdbId;
 
     private String overview;
-
     private String tagline;
-
-    private Integer runtime;
-
-    private Double revenue;
 
     @JsonProperty("release_date")
     private LocalDate releaseDate;
@@ -34,15 +27,10 @@ public class ProductDTO {
     @JsonProperty("poster_path")
     private String posterPath;
 
-    private Double budget;
-
-    private String homepage;
-
     @JsonProperty("original_language")
     private String originalLanguage;
 
     private BigDecimal price;
-
     private Set<Category> categories;
 
     public String getTrimmedTitle() {

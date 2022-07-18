@@ -7,18 +7,8 @@ import lombok.Data;
 @Data
 class MovieJsonRecord {
 
-    private Boolean adult;
-
-    private Double budget;
-
-    private List<Genre> genres;
-
-    private String homepage;
-
     private Long id;
-
-    @JsonProperty("imdb_id")
-    private String imdbId;
+    private String title;
 
     @JsonProperty("original_language")
     private String originalLanguage;
@@ -26,9 +16,8 @@ class MovieJsonRecord {
     @JsonProperty("original_title")
     private String originalTitle;
 
+    private String tagline;
     private String overview;
-
-    private Double popularity;
 
     @JsonProperty("poster_path")
     private String posterPath;
@@ -36,23 +25,7 @@ class MovieJsonRecord {
     @JsonProperty("release_date")
     private String releaseDate;
 
-    private Double revenue;
-
-    private Integer runtime;
-
-    private String status;
-
-    private String tagline;
-
-    private String title;
-
-    private Boolean video;
-
-    @JsonProperty("vote_average")
-    private Double voteAverage;
-
-    @JsonProperty("vote_count")
-    private Long voteCount;
+    private List<Genre> genres;
 
     @Data
     public static class Genre {

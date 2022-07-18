@@ -35,16 +35,9 @@ public class Product extends BaseEntity {
     @Column(nullable = false)
     private BigDecimal price;
 
-    @Column(name = "imdb_id")
-    private String imdbId;
-
     private String overview;
 
     private String tagline;
-
-    private Integer runtime;
-
-    private Double revenue;
 
     @Column(name = "release_date")
     private LocalDate releaseDate;
@@ -52,18 +45,8 @@ public class Product extends BaseEntity {
     @Column(name = "poster_path")
     private String posterPath;
 
-    private Double budget;
-
-    private String homepage;
-
     @Column(name = "original_language")
     private String originalLanguage;
-
-    @Column(name = "vote_average")
-    private Double voteAverage;
-
-    @Column(name = "vote_count")
-    private Long voteCount;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(

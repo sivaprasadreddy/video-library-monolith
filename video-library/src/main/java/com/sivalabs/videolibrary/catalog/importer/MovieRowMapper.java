@@ -24,18 +24,11 @@ class MovieRowMapper {
         Product product = new Product();
         product.setTitle(movieJsonRecord.getTitle());
         product.setTmdbId(movieJsonRecord.getId());
-        product.setImdbId(movieJsonRecord.getImdbId());
-        product.setBudget(movieJsonRecord.getBudget());
-        product.setHomepage(movieJsonRecord.getHomepage());
         product.setPosterPath(movieJsonRecord.getPosterPath());
         product.setOverview(movieJsonRecord.getOverview());
-        product.setRevenue(movieJsonRecord.getRevenue());
-        product.setRuntime(movieJsonRecord.getRuntime());
         product.setTagline(movieJsonRecord.getTagline());
         product.setReleaseDate(toLocalDate(movieJsonRecord.getReleaseDate()));
         product.setOriginalLanguage(movieJsonRecord.getOriginalLanguage());
-        product.setVoteAverage(movieJsonRecord.getVoteAverage());
-        product.setVoteCount(movieJsonRecord.getVoteCount());
         product.setPrice(randomPrice());
         product.setCategories(convertToCategories(movieJsonRecord.getGenres()));
         return product;

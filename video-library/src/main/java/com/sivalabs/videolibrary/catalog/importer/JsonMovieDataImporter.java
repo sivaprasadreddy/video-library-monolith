@@ -4,6 +4,7 @@ import static com.sivalabs.videolibrary.common.utils.TimeUtils.millisToLongDHMS;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sivalabs.videolibrary.ApplicationProperties;
 import com.sivalabs.videolibrary.catalog.entity.Category;
 import com.sivalabs.videolibrary.catalog.entity.Product;
 import com.sivalabs.videolibrary.catalog.service.CatalogService;
@@ -25,7 +26,7 @@ import org.springframework.stereotype.Component;
 public class JsonMovieDataImporter {
     private final CatalogService catalogService;
     private final MovieRowMapper movieRowMapper;
-    private final DataImportProperties dataImportProperties;
+    private final ApplicationProperties applicationProperties;
 
     @Async
     public void importDataAsync() throws IOException {
@@ -48,10 +49,10 @@ public class JsonMovieDataImporter {
     private void importProductsMetaData() throws IOException {
         log.info(
                 "Initializing products database from files: {}",
-                dataImportProperties.getMoviesDataFiles());
+                applicationProperties.getDataImport().getMoviesDataFiles());
         long start = System.currentTimeMillis();
         long recordCount = 0;
-        for (String dataFile : dataImportProperties.getMoviesDataFiles()) {
+        for (String dataFile : applicationProperties.getDataImport().getMoviesDataFiles()) {
             recordCount += importProductsFromJsonFile(dataFile, recordCount);
         }
         long end = System.currentTimeMillis();
@@ -77,11 +78,11 @@ public class JsonMovieDataImporter {
             product.setCategories(saveCategories(genresMap, product.getCategories()));
             productsBatches.add(product);
             recordCount++;
-            if (dataImportProperties.getMaxSize() > 0
-                    && recordCount >= dataImportProperties.getMaxSize()) {
+            if (applicationProperties.getDataImport().getMaxSize() > 0
+                    && recordCount >= applicationProperties.getDataImport().getMaxSize()) {
                 break;
             }
-            if (productsBatches.size() >= dataImportProperties.getBatchSize()) {
+            if (productsBatches.size() >= applicationProperties.getDataImport().getBatchSize()) {
                 catalogService.createProducts(productsBatches);
                 log.debug("Imported {} products so far", recordCount);
                 productsBatches = new ArrayList<>();

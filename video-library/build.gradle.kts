@@ -3,19 +3,19 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat.*
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 import org.springframework.boot.gradle.tasks.bundling.BootBuildImage
 import org.springframework.boot.gradle.tasks.run.BootRun
+import java.util.Properties
 
 plugins {
     id("java")
-    id("org.springframework.boot") version ("2.7.1")
-    id("io.spring.dependency-management") version ("1.0.11.RELEASE")
-    id("com.gorylenko.gradle-git-properties") version ("2.4.1")
-    id("org.sonarqube") version ("3.0") apply false
-    id("com.github.sherter.google-java-format") version ("0.9")
-    id("com.google.cloud.tools.jib") version ("3.2.1")
+    id("jacoco")
+    id("idea")
+    id("org.springframework.boot") version "2.7.1"
+    id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    id("com.gorylenko.gradle-git-properties") version "2.4.1"
+    id("org.sonarqube") version "3.0"
+    id("com.github.sherter.google-java-format") version "0.9"
+    id("com.google.cloud.tools.jib") version "3.2.1"
 }
-
-apply(plugin = "idea")
-apply(from = "gradle/static-checks.gradle")
 
 group = "com.sivalabs"
 version = "0.0.1"
@@ -96,13 +96,6 @@ dependencyManagement {
     }
 }
 
-tasks.named<BootJar>("bootJar") {
-    launchScript()
-}
-
-tasks.named<BootBuildImage>("bootBuildImage") {
-    imageName = "sivaprasadreddy/video-library"
-}
 
 jib {
     from {
@@ -120,15 +113,12 @@ jib {
     }
 }
 
-tasks.named("compileJava") {
-    dependsOn("processResources")
-}
-tasks.named("processResources") {
-    dependsOn("bootBuildInfo")
+tasks.named<BootJar>("bootJar") {
+    launchScript()
 }
 
-springBoot {
-    buildInfo()
+tasks.named<BootBuildImage>("bootBuildImage") {
+    imageName = "sivaprasadreddy/video-library"
 }
 
 tasks.named<BootRun>("bootRun") {
@@ -151,7 +141,6 @@ tasks.named("check") {
 
 tasks.withType<Test> {
     useJUnitPlatform()
-    exclude("**/*IT*", "**/*IntegrationTest*", "**/*IntTest*")
     testLogging {
         events(FAILED, STANDARD_ERROR, SKIPPED)
         exceptionFormat = FULL
@@ -161,31 +150,53 @@ tasks.withType<Test> {
     }
 }
 
-task<Test>("integrationTest") {
-    useJUnitPlatform()
+tasks.test {
+    configure<JacocoTaskExtension> {
+        excludes = listOf(
+            "com/sivalabs/videolibrary/*Application.*"
+        )
+    }
+    finalizedBy(tasks.jacocoTestReport)
+}
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        xml.required.set(false)
+        csv.required.set(false)
+        html.required.set(true)
+    }
+}
 
-    include("**/*IT*", "**/*IntegrationTest*", "**/*IntTest*")
-    shouldRunAfter("test")
+jacoco {
+    toolVersion = "0.8.8"
+}
 
-    testLogging {
-        events(FAILED, STANDARD_ERROR, SKIPPED)
-        exceptionFormat = FULL
-        showExceptions = true
-        showCauses = true
-        showStackTraces = true
+tasks.jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                counter = "LINE"
+                value = "COVEREDRATIO"
+                minimum = "0.3".toBigDecimal()
+            }
+        }
     }
 }
 
 tasks.named("check") {
-    dependsOn("integrationTest")
+    dependsOn("jacocoTestCoverageVerification")
 }
 
-task<TestReport>("testReport") {
-    destinationDirectory.set(file("$buildDir/reports/tests"))
-    reportOn("test")
-}
-
-task<TestReport>("integrationTestReport") {
-    destinationDirectory.set(file("$buildDir/reports/tests"))
-    reportOn("integrationTest")
+file("sonar-project.properties").bufferedReader().apply {
+    val sonarProperties = Properties()
+    sonarProperties.load(this)
+    sonarProperties.forEach { key, value ->
+        run {
+            sonarqube {
+                properties {
+                    property(key.toString(), value)
+                }
+            }
+        }
+    }
 }

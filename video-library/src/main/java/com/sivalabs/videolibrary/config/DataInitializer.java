@@ -1,6 +1,6 @@
 package com.sivalabs.videolibrary.config;
 
-import com.sivalabs.videolibrary.catalog.importer.DataImportProperties;
+import com.sivalabs.videolibrary.ApplicationProperties;
 import com.sivalabs.videolibrary.catalog.importer.JsonMovieDataImporter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,15 +14,15 @@ public class DataInitializer implements CommandLineRunner {
 
     private final JsonMovieDataImporter movieDataImporter;
 
-    private final DataImportProperties dataImportProperties;
+    private final ApplicationProperties applicationProperties;
 
     @Override
     public void run(String... args) throws Exception {
-        if (dataImportProperties.isDisabled()) {
+        if (applicationProperties.getDataImport().isDisabled()) {
             log.info("TMDB data initialization is disabled");
             return;
         }
-        if (dataImportProperties.isAsync()) {
+        if (applicationProperties.getDataImport().isAsync()) {
             log.info("Initializing TMDB data in async mode");
             movieDataImporter.importDataAsync();
         } else {

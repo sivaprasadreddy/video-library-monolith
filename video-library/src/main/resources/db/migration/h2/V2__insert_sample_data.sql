@@ -35,6 +35,5 @@ INSERT INTO CATEGORIES(ID, TMDB_ID, NAME, SLUG) VALUES
 (16, 10770, 'TV Movie', 'tv-movie'),
 (17, 53, 'Thriller', 'thriller'),
 (18, 10752, 'War', 'war'),
-(19, 37,'Western', 'western'),
-(20, null, 'Foreign', 'foreign')
+(19, 37,'Western', 'western')
 ;
