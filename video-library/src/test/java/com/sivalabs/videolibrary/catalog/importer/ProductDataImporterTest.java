@@ -7,8 +7,8 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 import com.sivalabs.videolibrary.ApplicationProperties;
-import com.sivalabs.videolibrary.catalog.entity.Category;
-import com.sivalabs.videolibrary.catalog.service.CatalogService;
+import com.sivalabs.videolibrary.catalog.domain.CatalogService;
+import com.sivalabs.videolibrary.catalog.domain.CategoryEntity;
 import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ class ProductDataImporterTest {
 
         catalogService = mock(CatalogService.class);
 
-        given(catalogService.saveCategory(any(Category.class)))
+        given(catalogService.saveCategory(any(CategoryEntity.class)))
                 .willAnswer(answer -> answer.getArgument(0));
 
         movieDataImporter =

@@ -1,8 +1,8 @@
 package com.sivalabs.videolibrary.orders.jobs;
 
 import com.sivalabs.videolibrary.common.logging.Loggable;
-import com.sivalabs.videolibrary.orders.entity.Order;
-import com.sivalabs.videolibrary.orders.service.OrderService;
+import com.sivalabs.videolibrary.orders.domain.OrderEntity;
+import com.sivalabs.videolibrary.orders.domain.OrderService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,14 +19,14 @@ public class OrderProcessingJob {
 
     @Scheduled(fixedDelay = 2 * 60 * 1000) // every 2 minutes
     void processOrders() {
-        List<Order> orders = orderService.findOrdersByStatus(Order.OrderStatus.NEW);
+        List<OrderEntity> orders = orderService.findOrdersByStatus(OrderEntity.OrderStatus.NEW);
         if (orders.isEmpty()) {
             log.info("No new orders to be processed");
             return;
         }
-        for (Order order : orders) {
+        for (OrderEntity order : orders) {
             log.info("Processing order {} ", order.getOrderId());
-            order.setStatus(Order.OrderStatus.DELIVERED);
+            order.setStatus(OrderEntity.OrderStatus.DELIVERED);
             orderService.updateOrder(order);
             log.info("Order {} is delivered", order.getOrderId());
         }

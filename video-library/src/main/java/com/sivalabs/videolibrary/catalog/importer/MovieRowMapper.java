@@ -1,7 +1,7 @@
 package com.sivalabs.videolibrary.catalog.importer;
 
-import com.sivalabs.videolibrary.catalog.entity.Category;
-import com.sivalabs.videolibrary.catalog.entity.Product;
+import com.sivalabs.videolibrary.catalog.domain.CategoryEntity;
+import com.sivalabs.videolibrary.catalog.domain.ProductEntity;
 import com.sivalabs.videolibrary.common.utils.CommonUtils;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,8 +20,8 @@ class MovieRowMapper {
 
     private static final Random random = new Random();
 
-    public Product mapToMovieEntity(MovieJsonRecord movieJsonRecord) {
-        Product product = new Product();
+    public ProductEntity mapToMovieEntity(MovieJsonRecord movieJsonRecord) {
+        ProductEntity product = new ProductEntity();
         product.setTitle(movieJsonRecord.getTitle());
         product.setTmdbId(movieJsonRecord.getId());
         product.setPosterPath(movieJsonRecord.getPosterPath());
@@ -44,11 +44,11 @@ class MovieRowMapper {
         return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
-    private Set<Category> convertToCategories(List<MovieJsonRecord.Genre> genres) {
-        Set<Category> categorySet = new HashSet<>();
+    private Set<CategoryEntity> convertToCategories(List<MovieJsonRecord.Genre> genres) {
+        Set<CategoryEntity> categorySet = new HashSet<>();
         if (genres != null) {
             for (MovieJsonRecord.Genre genre : genres) {
-                Category categoryEntity = new Category();
+                CategoryEntity categoryEntity = new CategoryEntity();
                 categoryEntity.setTmdbId((long) genre.getId());
                 categoryEntity.setSlug(CommonUtils.toSlug(genre.getName()));
                 categoryEntity.setName(genre.getName());
