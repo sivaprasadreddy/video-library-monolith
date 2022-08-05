@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -36,16 +36,16 @@ public class CustomerEntity extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    @NotEmpty()
+    @NotBlank()
     private String name;
 
     @Column(nullable = false, unique = true)
-    @NotEmpty
+    @NotBlank
     @Email(message = "Invalid email")
     private String email;
 
     @Column(nullable = false)
-    @NotEmpty
+    @NotBlank
     @Size(min = 4)
     private String password;
 }

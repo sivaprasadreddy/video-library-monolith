@@ -13,8 +13,8 @@
         <div class="col-md-4 offset-2">
             <div>
                 <h3
-                    th:text="${movie.title}">movie.title</h3>
-                <img th:src="${movie.posterPath}"  alt="Product"
+                    th:text="${product.title}">product.title</h3>
+                <img th:src="${product.posterPath}"  alt="Product"
                      onerror="this.onerror=null; this.src='/images/image-not-found.png'"
                      height="400" width="300">
             </div>
@@ -23,18 +23,18 @@
         <div class="col-md-6">
             <div class="pt-3">
                 <h3>Overview</h3>
-                <p th:text="${movie.overview}">movie.overview</p>
+                <p th:text="${product.overview}">product.overview</p>
             </div>
             <div class="pt-3">
                 <h3>Tagline</h3>
-                <p th:text="${movie.tagline}">movie.tagline</p>
+                <p th:text="${product.tagline}">product.tagline</p>
             </div>
             <div class="pt-3">
-                <p th:text="${'Released Date:'+ movie.releaseDate}">movie.releaseDate</p>
-                <p th:text="${'Original Language:'+ movie.originalLanguage}">movie.originalLanguage</p>
+                <p th:text="${'Released Date:'+ product.releaseDate}">product.releaseDate</p>
+                <p th:text="${'Original Language:'+ product.originalLanguage}">product.originalLanguage</p>
             </div>
             <div class="pt-3">
-                <button class="btn btn-primary" th:onclick="'javascript:addItemToCart(\'' + ${movie.uuid} + '\');'">
+                <button class="btn btn-primary" th:onclick="'javascript:addItemToCart(\'' + ${product.uuid} + '\');'">
                     Add to Cart
                 </button>
             </div>

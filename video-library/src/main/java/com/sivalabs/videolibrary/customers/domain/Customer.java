@@ -2,7 +2,7 @@ package com.sivalabs.videolibrary.customers.domain;
 
 import java.io.Serializable;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,13 +16,13 @@ import lombok.Setter;
 public class Customer implements Serializable {
 
     private Long id;
-    @NotEmpty private String name;
+    @NotBlank private String name;
 
-    @NotEmpty
+    @NotBlank
     @Email(message = "Invalid email")
     private String email;
 
-    @NotEmpty
+    @NotBlank
     @Size(min = 4)
     private String password;
 }
