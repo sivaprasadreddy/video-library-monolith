@@ -44,11 +44,11 @@ public class CartController {
     @PostMapping(value = "/cart/items")
     @ResponseBody
     public Cart addToCart(@RequestBody OrderedProductEntity product, HttpServletRequest request) {
-        log.info("Add tmdbId: {} to cart", product.getTmdbId());
+        log.info("Add uuid: {} to cart", product.getUuid());
         Cart cart = getOrCreateCart(request);
         OrderedProductEntity item =
-                productService.findProductByCode(product.getTmdbId()).orElse(null);
-        log.info("Adding product: {}", item.getTmdbId());
+                productService.findProductByCode(product.getUuid()).orElse(null);
+        log.info("Adding product: {}", item.getUuid());
         cart.addItem(item);
         return cart;
     }
@@ -57,25 +57,25 @@ public class CartController {
     @ResponseBody
     public Cart updateCartItem(@RequestBody LineItem item, HttpServletRequest request) {
         log.info(
-                "Update cart line item tmdbId: {}, quantity: {} ",
-                item.getProduct().getTmdbId(),
+                "Update cart line item uuid: {}, quantity: {} ",
+                item.getProduct().getUuid(),
                 item.getQuantity());
         Cart cart = getOrCreateCart(request);
         if (item.getQuantity() <= 0) {
-            Long tmdbId = item.getProduct().getTmdbId();
-            cart.removeItem(tmdbId);
+            Long uuid = item.getProduct().getUuid();
+            cart.removeItem(uuid);
         } else {
             cart.updateItemQuantity(item.getProduct(), item.getQuantity());
         }
         return cart;
     }
 
-    @DeleteMapping(value = "/cart/items/{tmdbId}")
+    @DeleteMapping(value = "/cart/items/{uuid}")
     @ResponseBody
-    public Cart removeCartItem(@PathVariable("tmdbId") Long tmdbId, HttpServletRequest request) {
-        log.info("Remove cart line item tmdbId: {}", tmdbId);
+    public Cart removeCartItem(@PathVariable("uuid") Long uuid, HttpServletRequest request) {
+        log.info("Remove cart line item uuid: {}", uuid);
         Cart cart = getOrCreateCart(request);
-        cart.removeItem(tmdbId);
+        cart.removeItem(uuid);
         return cart;
     }
 

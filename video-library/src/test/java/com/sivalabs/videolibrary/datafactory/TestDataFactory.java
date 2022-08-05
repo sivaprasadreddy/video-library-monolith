@@ -2,8 +2,8 @@ package com.sivalabs.videolibrary.datafactory;
 
 import static com.sivalabs.videolibrary.common.utils.CommonUtils.toSlug;
 
-import com.sivalabs.videolibrary.catalog.domain.CategoryEntity;
-import com.sivalabs.videolibrary.catalog.domain.ProductEntity;
+import com.sivalabs.videolibrary.catalog.domain.Category;
+import com.sivalabs.videolibrary.catalog.domain.Product;
 import com.sivalabs.videolibrary.customers.domain.CustomerEntity;
 import com.sivalabs.videolibrary.orders.domain.OrderEntity;
 import com.sivalabs.videolibrary.orders.domain.OrderItemEntity;
@@ -16,14 +16,14 @@ import java.util.stream.Collectors;
 
 public class TestDataFactory {
 
-    public static ProductEntity createProduct(String title, String... categories) {
-        ProductEntity product = new ProductEntity();
+    public static Product createProduct(String title, String... categories) {
+        Product product = new Product();
         product.setTitle(title);
         product.setCategories(
                 Arrays.stream(categories)
                         .map(
                                 g -> {
-                                    CategoryEntity category = new CategoryEntity();
+                                    Category category = new Category();
                                     category.setName(g);
                                     category.setSlug(toSlug(g));
                                     return category;

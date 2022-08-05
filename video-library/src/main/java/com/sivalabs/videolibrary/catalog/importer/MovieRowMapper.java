@@ -1,7 +1,7 @@
 package com.sivalabs.videolibrary.catalog.importer;
 
-import com.sivalabs.videolibrary.catalog.domain.CategoryEntity;
-import com.sivalabs.videolibrary.catalog.domain.ProductEntity;
+import com.sivalabs.videolibrary.catalog.domain.Category;
+import com.sivalabs.videolibrary.catalog.domain.Product;
 import com.sivalabs.videolibrary.common.utils.CommonUtils;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -17,14 +17,14 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 class MovieRowMapper {
-
+    public static final String TMDB_IMAGE_PATH_PREFIX = "https://image.tmdb.org/t/p/w500";
     private static final Random random = new Random();
 
-    public ProductEntity mapToMovieEntity(MovieJsonRecord movieJsonRecord) {
-        ProductEntity product = new ProductEntity();
+    public Product mapToMovieEntity(MovieJsonRecord movieJsonRecord) {
+        Product product = new Product();
         product.setTitle(movieJsonRecord.getTitle());
-        product.setTmdbId(movieJsonRecord.getId());
-        product.setPosterPath(movieJsonRecord.getPosterPath());
+        product.setUuid(movieJsonRecord.getId());
+        product.setPosterPath(TMDB_IMAGE_PATH_PREFIX + movieJsonRecord.getPosterPath());
         product.setOverview(movieJsonRecord.getOverview());
         product.setTagline(movieJsonRecord.getTagline());
         product.setReleaseDate(toLocalDate(movieJsonRecord.getReleaseDate()));
@@ -44,16 +44,16 @@ class MovieRowMapper {
         return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
-    private Set<CategoryEntity> convertToCategories(List<MovieJsonRecord.Genre> genres) {
-        Set<CategoryEntity> categorySet = new HashSet<>();
+    private Set<Category> convertToCategories(List<MovieJsonRecord.Genre> genres) {
+        Set<Category> categorySet = new HashSet<>();
         if (genres != null) {
             for (MovieJsonRecord.Genre genre : genres) {
-                CategoryEntity categoryEntity = new CategoryEntity();
-                categoryEntity.setTmdbId((long) genre.getId());
-                categoryEntity.setSlug(CommonUtils.toSlug(genre.getName()));
-                categoryEntity.setName(genre.getName());
+                Category category = new Category();
+                category.setUuid((long) genre.getId());
+                category.setSlug(CommonUtils.toSlug(genre.getName()));
+                category.setName(genre.getName());
 
-                categorySet.add(categoryEntity);
+                categorySet.add(category);
             }
         }
         return categorySet;

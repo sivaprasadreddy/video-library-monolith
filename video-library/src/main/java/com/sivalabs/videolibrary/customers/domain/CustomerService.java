@@ -19,11 +19,6 @@ public class CustomerService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
-    public Optional<CustomerEntity> getUserById(Long id) {
-        return customerRepository.findById(id);
-    }
-
-    @Transactional(readOnly = true)
     public Optional<CustomerEntity> getUserByEmail(String email) {
         return customerRepository.findByEmail(email);
     }
@@ -34,29 +29,5 @@ public class CustomerService {
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return customerRepository.save(user);
-    }
-
-    public CustomerEntity updateUser(CustomerEntity user) {
-        Optional<CustomerEntity> userOptional = customerRepository.findById(user.getId());
-        if (userOptional.isEmpty()) {
-            throw new UserNotFoundException("User with id " + user.getId() + " not found");
-        }
-        CustomerEntity existingUser = userOptional.get();
-        existingUser.setName(user.getName());
-        return customerRepository.save(existingUser);
-    }
-
-    public void changePassword(String email, String oldPwd, String newPwd) {
-        Optional<CustomerEntity> userByEmail = this.getUserByEmail(email);
-        if (userByEmail.isEmpty()) {
-            throw new UserNotFoundException("User with email " + email + " not found");
-        }
-        CustomerEntity user = userByEmail.get();
-        if (passwordEncoder.matches(oldPwd, user.getPassword())) {
-            user.setPassword(passwordEncoder.encode(newPwd));
-            customerRepository.save(user);
-        } else {
-            throw new BadRequestException("Current password doesn't match");
-        }
     }
 }

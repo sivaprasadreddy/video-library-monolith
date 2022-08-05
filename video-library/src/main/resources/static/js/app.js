@@ -15,28 +15,28 @@ function updateCartItemCount()
     });
 }
 
-function addItemToCart(tmdbId)
+function addItemToCart(uuid)
 {
     $.ajax ({
         url: '/cart/items',
         type: "POST",
         dataType: "json",
         contentType: "application/json",
-        data : '{"tmdbId":"'+ tmdbId +'"}"',
+        data : '{"uuid":"'+ uuid +'"}"',
         complete: function(responseData, status, xhttp){
             updateCartItemCount();
         }
     });
 }
 
-function updateCartItemQuantity(tmdbId, quantity)
+function updateCartItemQuantity(uuid, quantity)
 {
     $.ajax ({
         url: '/cart/items',
         type: "PUT",
         dataType: "json",
         contentType: "application/json",
-        data : '{ "product" :{ "tmdbId":"'+ tmdbId +'"},"quantity":"'+quantity+'"}',
+        data : '{ "product" :{ "uuid":"'+ uuid +'"},"quantity":"'+quantity+'"}',
         complete: function(responseData, status, xhttp){
             updateCartItemCount();
             location.href = '/cart'
@@ -44,9 +44,9 @@ function updateCartItemQuantity(tmdbId, quantity)
     });
 }
 
-function removeItemFromCart(tmdbId) {
+function removeItemFromCart(uuid) {
     $.ajax ({
-        url: '/cart/items/'+tmdbId,
+        url: '/cart/items/'+uuid,
         type: "DELETE",
         dataType: "json",
         contentType: "application/json",

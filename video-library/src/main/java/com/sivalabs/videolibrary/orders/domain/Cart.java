@@ -16,7 +16,7 @@ public class Cart {
 
     public void addItem(OrderedProductEntity product) {
         for (LineItem lineItem : items) {
-            if (lineItem.getProduct().getTmdbId().equals(product.getTmdbId())) {
+            if (lineItem.getProduct().getUuid().equals(product.getUuid())) {
                 lineItem.setQuantity(lineItem.getQuantity() + 1);
                 return;
             }
@@ -27,16 +27,16 @@ public class Cart {
 
     public void updateItemQuantity(OrderedProductEntity product, int quantity) {
         for (LineItem lineItem : items) {
-            if (lineItem.getProduct().getTmdbId().equals(product.getTmdbId())) {
+            if (lineItem.getProduct().getUuid().equals(product.getUuid())) {
                 lineItem.setQuantity(quantity);
             }
         }
     }
 
-    public void removeItem(Long tmdbId) {
+    public void removeItem(Long uuid) {
         LineItem item = null;
         for (LineItem lineItem : items) {
-            if (lineItem.getProduct().getTmdbId().equals(tmdbId)) {
+            if (lineItem.getProduct().getUuid().equals(uuid)) {
                 item = lineItem;
                 break;
             }

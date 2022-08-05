@@ -61,7 +61,7 @@ public class OrderController {
         for (LineItem lineItem : cart.getItems()) {
             OrderItemEntity orderItem = new OrderItemEntity();
             orderItem.setOrder(newOrder);
-            orderItem.setProductCode(String.valueOf(lineItem.getProduct().getTmdbId()));
+            orderItem.setProductCode(String.valueOf(lineItem.getProduct().getUuid()));
             orderItem.setProductName(lineItem.getProduct().getTitle());
             orderItem.setProductPrice(lineItem.getProduct().getPrice());
             orderItem.setQuantity(lineItem.getQuantity());

@@ -34,7 +34,7 @@
                     <td>
                         <input type="number" min="0"
                                value="1" th:value="${item.quantity}"
-                               th:onchange="'javascript:updateCartItemQuantity( \''+${item.product.tmdbId}+'\' , '+this.value+');'"
+                               th:onchange="'javascript:updateCartItemQuantity( \''+${item.product.uuid}+'\' , '+this.value+');'"
                         />
                     </td>
                     <td th:text="${item.getSubTotal()}">subtotal</td>

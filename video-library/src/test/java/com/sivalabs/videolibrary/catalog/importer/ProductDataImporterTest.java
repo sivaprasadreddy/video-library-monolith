@@ -8,7 +8,7 @@ import static org.mockito.Mockito.mock;
 
 import com.sivalabs.videolibrary.ApplicationProperties;
 import com.sivalabs.videolibrary.catalog.domain.CatalogService;
-import com.sivalabs.videolibrary.catalog.domain.CategoryEntity;
+import com.sivalabs.videolibrary.catalog.domain.Category;
 import java.io.IOException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,14 +23,12 @@ class ProductDataImporterTest {
     void setUp() {
         movieRowMapper = new MovieRowMapper();
         applicationProperties = new ApplicationProperties();
-        applicationProperties.getDataImport().setDisabled(false);
         applicationProperties
-                .getDataImport()
-                .setMoviesDataFiles(singletonList("/data/movie-details-test.txt"));
+                .setMoviesDataFiles(singletonList("/data/movies-test.jsonlines"));
 
         catalogService = mock(CatalogService.class);
 
-        given(catalogService.saveCategory(any(CategoryEntity.class)))
+        given(catalogService.saveCategory(any(Category.class)))
                 .willAnswer(answer -> answer.getArgument(0));
 
         movieDataImporter =

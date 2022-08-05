@@ -1,16 +1,15 @@
 package com.sivalabs.videolibrary.catalog.domain;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import com.sivalabs.videolibrary.common.models.PagedResult;
 
-public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
+import java.util.Optional;
 
-    @Query(
-            "select distinct m from ProductEntity m inner join m.categories c where c.id = :categoryId")
-    Page<ProductEntity> findByCategory(@Param("categoryId") Long categoryId, Pageable pageable);
-
-    Page<ProductEntity> findByTitleContainingIgnoreCase(String query, Pageable pageable);
+public interface ProductRepository {
+    Optional<Product> findById(Long id);
+    PagedResult<Product> findAll(int pageNo);
+    PagedResult<Product> findByCategory(Long categoryId, int pageNo);
+    PagedResult<Product> findByTitleContainingIgnoreCase(String query, int pageNo);
+    void deleteAllInBatch();
+    Product save(Product product);
+    Long count();
 }

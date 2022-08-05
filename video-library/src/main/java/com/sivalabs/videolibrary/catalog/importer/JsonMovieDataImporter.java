@@ -6,8 +6,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sivalabs.videolibrary.ApplicationProperties;
 import com.sivalabs.videolibrary.catalog.domain.CatalogService;
-import com.sivalabs.videolibrary.catalog.domain.CategoryEntity;
-import com.sivalabs.videolibrary.catalog.domain.ProductEntity;
+import com.sivalabs.videolibrary.catalog.domain.Category;
+import com.sivalabs.videolibrary.catalog.domain.Product;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -27,31 +26,22 @@ public class JsonMovieDataImporter {
     private final MovieRowMapper movieRowMapper;
     private final ApplicationProperties applicationProperties;
 
-    @Async
-    public void importDataAsync() throws IOException {
-        importDataInternal();
-    }
-
     public void importData() throws IOException {
-        importDataInternal();
-    }
-
-    private void importDataInternal() throws IOException {
-        deleteExistingProductsData();
+        Long count = catalogService.findProductsCount();
+        if(count > 0) {
+            return;
+        }
+        catalogService.deleteAllProducts();
         importProductsMetaData();
-    }
-
-    private void deleteExistingProductsData() {
-        catalogService.cleanupProductsData();
     }
 
     private void importProductsMetaData() throws IOException {
         log.info(
                 "Initializing products database from files: {}",
-                applicationProperties.getDataImport().getMoviesDataFiles());
+                applicationProperties.getMoviesDataFiles());
         long start = System.currentTimeMillis();
         long recordCount = 0;
-        for (String dataFile : applicationProperties.getDataImport().getMoviesDataFiles()) {
+        for (String dataFile : applicationProperties.getMoviesDataFiles()) {
             recordCount += importProductsFromJsonFile(dataFile, recordCount);
         }
         long end = System.currentTimeMillis();
@@ -65,46 +55,30 @@ public class JsonMovieDataImporter {
         ObjectMapper objectMapper =
                 new ObjectMapper()
                         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        Map<String, CategoryEntity> genresMap =
+        Map<String, Category> genresMap =
                 catalogService.findAllCategories().stream()
-                        .collect(Collectors.toMap(CategoryEntity::getName, g -> g));
-        List<ProductEntity> productsBatches = new ArrayList<>();
-
+                        .collect(Collectors.toMap(Category::getName, g -> g));
         log.info("Line count:{}", lines.size());
         for (String line : lines) {
             MovieJsonRecord movieJsonRecord = objectMapper.readValue(line, MovieJsonRecord.class);
-            ProductEntity product = movieRowMapper.mapToMovieEntity(movieJsonRecord);
+            Product product = movieRowMapper.mapToMovieEntity(movieJsonRecord);
             product.setCategories(saveCategories(genresMap, product.getCategories()));
-            productsBatches.add(product);
+            catalogService.createProduct(product);
             recordCount++;
-            if (applicationProperties.getDataImport().getMaxSize() > 0
-                    && recordCount >= applicationProperties.getDataImport().getMaxSize()) {
-                break;
-            }
-            if (productsBatches.size() >= applicationProperties.getDataImport().getBatchSize()) {
-                catalogService.createProducts(productsBatches);
-                log.debug("Imported {} products so far", recordCount);
-                productsBatches = new ArrayList<>();
-            }
-        }
-
-        if (!productsBatches.isEmpty()) {
-            catalogService.createProducts(productsBatches);
-            log.debug("Imported {} products so far", recordCount);
         }
         log.info("Imported products with {} records from file {}", recordCount, fileName);
         return recordCount;
     }
 
-    private Set<CategoryEntity> saveCategories(
-            Map<String, CategoryEntity> existingCategories, Set<CategoryEntity> categories) {
-        Set<CategoryEntity> categoryList = new HashSet<>();
-        for (CategoryEntity category : categories) {
-            CategoryEntity existingCategory = existingCategories.get(category.getName());
+    private Set<Category> saveCategories(
+            Map<String, Category> existingCategories, Set<Category> categories) {
+        Set<Category> categoryList = new HashSet<>();
+        for (Category category : categories) {
+            Category existingCategory = existingCategories.get(category.getName());
             if (existingCategory != null) {
                 categoryList.add(existingCategory);
             } else {
-                CategoryEntity savedCategory = catalogService.saveCategory(category);
+                Category savedCategory = catalogService.saveCategory(category);
                 categoryList.add(savedCategory);
                 existingCategories.put(savedCategory.getName(), savedCategory);
             }

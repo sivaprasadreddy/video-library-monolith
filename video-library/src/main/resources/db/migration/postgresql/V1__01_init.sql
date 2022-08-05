@@ -19,7 +19,7 @@ create table customers (
 create table products (
     id bigint DEFAULT nextval('product_id_seq') not null,
     title varchar(255),
-    tmdb_id bigint,
+    uuid bigint,
     release_date date,
     poster_path varchar(512),
     original_language varchar(255),
@@ -33,7 +33,7 @@ create table products (
 
 create table categories (
     id bigint DEFAULT nextval('category_id_seq') not null,
-    tmdb_id int,
+    uuid int,
     name varchar(255) not null,
     slug varchar(255) not null,
     created_at timestamp,

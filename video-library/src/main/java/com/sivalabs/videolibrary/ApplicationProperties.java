@@ -1,7 +1,6 @@
 package com.sivalabs.videolibrary;
 
 import java.util.List;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -11,14 +10,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Setter
 public class ApplicationProperties {
 
-    private DataImport dataImport = new DataImport();
+    private List<String> moviesDataFiles;
 
-    @Data
-    public static class DataImport {
-        private boolean disabled;
-        private int maxSize;
-        private int batchSize;
-        private boolean async;
-        private List<String> moviesDataFiles;
-    }
 }

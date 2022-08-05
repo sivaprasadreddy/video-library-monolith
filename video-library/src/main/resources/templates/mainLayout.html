@@ -44,20 +44,11 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <li>
-                                <a class="dropdown-item" href="#" th:href="@{/profile}">
-                                    <i class="fas fa-user-circle" ></i> My Profile
-                                </a>
-                            </li>
-                            <li>
                                 <a class="dropdown-item" href="#" th:href="@{/orders}">
                                     <i class="fas fa-user-circle" ></i> My Orders
                                 </a>
                             </li>
-                            <li>
-                                <a class="dropdown-item" href="#" th:href="@{/change-password}">
-                                    <i class="fas fa-user-circle" ></i> Change Password
-                                </a>
-                            </li>
+
                             <div class="dropdown-divider"></div>
                             <li>
                                 <a class="dropdown-item" href="#" th:href="@{/logout}">
@@ -79,12 +70,6 @@
         </div>
     </div>
 </main>
-<footer class="footer">
-    <div class="container">
-        <p class="text-center">SivaLabs &copy; 2022</p>
-    </div>
-</footer>
-
 <script th:src="@{'/webjars/jquery/jquery.js'}"></script>
 <script th:src="@{'/webjars/bootstrap/js/bootstrap.bundle.js'}"></script>
 <script th:src="@{'/js/common.js'}"></script>

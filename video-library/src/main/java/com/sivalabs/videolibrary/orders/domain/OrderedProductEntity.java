@@ -24,8 +24,8 @@ public class OrderedProductEntity {
 
     private String title;
 
-    @Column(name = "tmdb_id")
-    private Long tmdbId;
+    @Column(name = "uuid")
+    private Long uuid;
 
     private BigDecimal price;
 }

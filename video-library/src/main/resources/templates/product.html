@@ -35,7 +35,7 @@
                 <p th:text="${'Original Language:'+ product.originalLanguage}">product.originalLanguage</p>
             </div>
             <div class="pt-3">
-                <button class="btn btn-primary" th:onclick="'javascript:addItemToCart(\'' + ${product.tmdbId} + '\');'">
+                <button class="btn btn-primary" th:onclick="'javascript:addItemToCart(\'' + ${product.uuid} + '\');'">
                     Add to Cart
                 </button>
             </div>

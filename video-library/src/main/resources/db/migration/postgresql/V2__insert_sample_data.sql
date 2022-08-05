@@ -4,7 +4,7 @@ INSERT INTO customers (email, password, name, created_at) VALUES
 ('prasad@gmail.com', '$2a$10$vtnCx8LxraSbveB26Lth3.s/.9hI1SFHwCFTSlAkAlVRybva6GQo6', 'Prasad',  CURRENT_TIMESTAMP)
 ;
 
-INSERT INTO CATEGORIES(ID, TMDB_ID, NAME, SLUG) VALUES
+INSERT INTO CATEGORIES(ID, uuid, NAME, SLUG) VALUES
 (1,	28, 'Action', 'action'),
 (2,	12, 'Adventure', 'adventure'),
 (3,	16, 'Animation', 'animation'),
