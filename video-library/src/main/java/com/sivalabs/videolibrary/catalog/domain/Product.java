@@ -1,17 +1,15 @@
 package com.sivalabs.videolibrary.catalog.domain;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
-
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 @Setter
 @Getter
@@ -27,7 +25,7 @@ public class Product implements Serializable {
     private LocalDate releaseDate;
     private String posterPath;
     private String originalLanguage;
-    private Set<Category> categories = new HashSet<>();
+    private Set<Category> categories;
     private BigDecimal price;
 
     public String getTrimmedTitle() {

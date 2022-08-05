@@ -68,21 +68,16 @@
             </div>
             <div class="mb-3">
                 <label for="deliveryAddress" class="control-label">Delivery Address</label>
-                <input
-                        type="text"
-                        class="form-control"
-                        id="deliveryAddress"
-                        name="deliveryAddress"
-                        readonly="readonly"
-                        value=""
-                        th:value="${order.deliveryAddress}"
-                />
+                <textarea class="form-control" rows="3"
+                          id="deliveryAddress"
+                          name="deliveryAddress"
+                          readonly="readonly"
+                          th:text="${order.deliveryAddress}"></textarea>
+
             </div>
         </form>
     </div>
     </div>
-</div>
-<div layout:fragment="pageScripts">
 </div>
 </body>
 </html>

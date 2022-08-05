@@ -1,15 +1,14 @@
 package com.sivalabs.videolibrary.catalog.adapter;
 
+import static org.springframework.data.domain.Sort.Direction.ASC;
+
 import com.sivalabs.videolibrary.catalog.domain.Category;
 import com.sivalabs.videolibrary.catalog.domain.CategoryRepository;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Optional;
-
-import static org.springframework.data.domain.Sort.Direction.ASC;
 
 @Repository
 @RequiredArgsConstructor

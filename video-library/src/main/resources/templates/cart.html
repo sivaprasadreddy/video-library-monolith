@@ -16,7 +16,7 @@
         <div th:if="${cart.items.isEmpty()}">
             <h3>Cart is empty. <a href="#" th:href="@{/}">Continue shopping</a></h3>
         </div>
-        <div th:if="${!cart.items.isEmpty()}">
+        <div th:if="${!cart.items.isEmpty()}" class="pb-3">
             <table class="table">
                 <thead>
                 <tr>
@@ -55,69 +55,64 @@
                 <h3>Please <a href="#" th:href="@{/login}">Login</a> to place order</h3>
             </div>
             <div sec:authorize="isAuthenticated()">
-                <form method="post" th:action="@{/cart/checkout}">
-                    <div class="mb-3">
-                        <label for="customerName" class="control-label">Customer Name</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="customerName"
-                                name="customerName"
-                                value=""
-                        />
+                <form class="row g-3" method="post" th:action="@{/orders}" th:object="${order}">
+                    <div class="col-md-6">
+                        <label for="customerName" class="form-label">Customer Name</label>
+                        <input type="text" class="form-control"
+                               id="customerName"
+                               name="customerName"
+                               value=""
+                               th:classappend="${#fields.hasErrors('customerName')} ? 'is-invalid' : ''"/>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('customerName')}"
+                             th:errors="*{customerName}">customerName Error</div>
                     </div>
-                    <div class="mb-3">
-                        <label for="customerEmail" class="control-label">Customer Email</label>
-                        <input
-                                type="email"
-                                class="form-control"
-                                id="customerEmail"
-                                name="customerEmail"
-                                value=""
-                        />
+                    <div class="col-md-6">
+                        <label for="customerEmail" class="form-label">Customer Email</label>
+                        <input type="email" class="form-control"
+                               id="customerEmail"
+                               name="customerEmail"
+                               value=""
+                               th:classappend="${#fields.hasErrors('customerEmail')} ? 'is-invalid' : ''">
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('customerEmail')}"
+                             th:errors="*{customerEmail}">customerEmail Error</div>
                     </div>
-                    <div class="mb-3">
-                        <label for="deliveryAddress" class="control-label">Delivery Address</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="deliveryAddress"
-                                name="deliveryAddress"
-                                value=""
-                        />
+                    <div class="col-12">
+                        <label for="deliveryAddress" class="form-label">Delivery Address</label>
+                        <textarea class="form-control" rows="3"
+                                  id="deliveryAddress"
+                                  name="deliveryAddress"
+                                  th:classappend="${#fields.hasErrors('deliveryAddress')} ? 'is-invalid' : ''"></textarea>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('deliveryAddress')}"
+                             th:errors="*{deliveryAddress}">deliveryAddress Error</div>
                     </div>
-                    <div class="mb-3">
-                        <label for="creditCardNumber" class="control-label">Credit Card Number</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="creditCardNumber"
-                                name="creditCardNumber"
-                                value=""
-                        />
+                    <div class="col-6">
+                        <label for="creditCardNumber" class="form-label">Credit Card Number</label>
+                        <input type="text" class="form-control"
+                               id="creditCardNumber"
+                               name="creditCardNumber"
+                               value=""
+                               th:classappend="${#fields.hasErrors('creditCardNumber')} ? 'is-invalid' : ''">
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('creditCardNumber')}"
+                             th:errors="*{creditCardNumber}">creditCardNumber Error</div>
                     </div>
-                    <div class="mb-3">
-                        <label for="cvv" class="control-label">CVV</label>
-                        <input
-                                type="text"
-                                class="form-control"
-                                id="cvv"
-                                name="cvv"
-                                value=""
-                        />
+                    <div class="col-md-6">
+                        <label for="cvv" class="form-label">CVV</label>
+                        <input type="text" class="form-control"
+                               id="cvv"
+                               name="cvv"
+                               value=""
+                               th:classappend="${#fields.hasErrors('cvv')} ? 'is-invalid' : ''">
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('cvv')}"
+                             th:errors="*{cvv}">cvv Error</div>
                     </div>
-                    <button
-                            type="submit"
-                            class="btn btn-primary">
-                        Place Order
-                    </button>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Place Order</button>
+                    </div>
                 </form>
             </div>
         </div>
         </div>
     </div>
-</div>
-<div layout:fragment="pageScripts">
 </div>
 </body>
 </html>

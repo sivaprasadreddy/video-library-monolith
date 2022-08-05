@@ -1,8 +1,6 @@
 package com.sivalabs.videolibrary.customers.domain;
 
 import com.sivalabs.videolibrary.common.exception.ApplicationException;
-import com.sivalabs.videolibrary.common.exception.BadRequestException;
-import com.sivalabs.videolibrary.common.exception.UserNotFoundException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,11 +17,11 @@ public class CustomerService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
-    public Optional<CustomerEntity> getUserByEmail(String email) {
+    public Optional<Customer> getUserByEmail(String email) {
         return customerRepository.findByEmail(email);
     }
 
-    public CustomerEntity createUser(CustomerEntity user) {
+    public Customer createUser(Customer user) {
         if (customerRepository.existsByEmail(user.getEmail())) {
             throw new ApplicationException("Email " + user.getEmail() + " is already in use");
         }

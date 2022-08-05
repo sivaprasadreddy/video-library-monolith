@@ -37,8 +37,8 @@ class OrderServiceTest {
 
     @Test
     void should_throw_exception_when_cancelling_delivered_order() {
-        OrderEntity order = createOrder(1L);
-        order.setStatus(OrderEntity.OrderStatus.DELIVERED);
+        Order order = createOrder(1L);
+        order.setStatus(OrderStatus.DELIVERED);
         given(orderRepository.findByOrderId(orderId)).willReturn(Optional.of(order));
 
         assertThrows(BadRequestException.class, () -> orderService.cancelOrder(orderId));

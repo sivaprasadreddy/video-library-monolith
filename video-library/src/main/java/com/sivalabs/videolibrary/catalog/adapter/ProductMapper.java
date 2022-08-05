@@ -1,13 +1,12 @@
 package com.sivalabs.videolibrary.catalog.adapter;
 
+import static java.util.stream.Collectors.toSet;
+
 import com.sivalabs.videolibrary.catalog.domain.Category;
 import com.sivalabs.videolibrary.catalog.domain.Product;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.Set;
-
-import static java.util.stream.Collectors.toSet;
 
 @Component
 @RequiredArgsConstructor
@@ -20,9 +19,7 @@ public class ProductMapper {
         }
         Set<Category> categories = null;
         if (entity.getCategories() != null) {
-            categories = entity.getCategories().stream()
-                    .map(categoryMapper::map)
-                    .collect(toSet());
+            categories = entity.getCategories().stream().map(categoryMapper::map).collect(toSet());
         }
         return Product.builder()
                 .id(entity.getId())
@@ -44,9 +41,10 @@ public class ProductMapper {
         }
         Set<CategoryEntity> categories = null;
         if (product.getCategories() != null) {
-            categories = product.getCategories().stream()
-                    .map(categoryMapper::mapToEntity)
-                    .collect(toSet());
+            categories =
+                    product.getCategories().stream()
+                            .map(categoryMapper::mapToEntity)
+                            .collect(toSet());
         }
         return ProductEntity.builder()
                 .id(product.getId())

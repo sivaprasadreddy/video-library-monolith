@@ -3,7 +3,6 @@ package com.sivalabs.videolibrary.catalog.adapter;
 import com.sivalabs.videolibrary.common.entity.BaseEntity;
 import java.util.Set;
 import javax.persistence.*;
-
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

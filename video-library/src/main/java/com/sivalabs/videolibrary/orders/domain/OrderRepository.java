@@ -2,13 +2,14 @@ package com.sivalabs.videolibrary.orders.domain;
 
 import java.util.List;
 import java.util.Optional;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
+public interface OrderRepository {
 
-    Optional<OrderEntity> findByOrderId(String orderId);
+    Optional<Order> findByOrderId(String orderId);
 
-    List<OrderEntity> findByStatus(OrderEntity.OrderStatus status);
+    List<Order> findByStatus(OrderStatus status);
 
-    List<OrderEntity> findByCreatedBy(Long userId);
+    List<Order> findByCreatedBy(Long userId);
+
+    Order save(Order order);
 }

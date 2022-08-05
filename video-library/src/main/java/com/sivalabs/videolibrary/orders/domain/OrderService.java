@@ -18,42 +18,41 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
-    public OrderConfirmationDTO createOrder(OrderEntity order) {
+    public OrderConfirmationDTO createOrder(Order order) {
         order.setOrderId(UUID.randomUUID().toString());
-        order.setStatus(OrderEntity.OrderStatus.NEW);
-        order.getItems().forEach(lineItem -> lineItem.setOrder(order));
-        OrderEntity savedOrder = this.orderRepository.save(order);
+        order.setStatus(OrderStatus.NEW);
+        Order savedOrder = this.orderRepository.save(order);
         log.info("Created Order ID=" + savedOrder.getId() + ", ref_num=" + savedOrder.getOrderId());
         return new OrderConfirmationDTO(savedOrder.getOrderId(), savedOrder.getStatus());
     }
 
-    public Optional<OrderEntity> findOrderByOrderId(String orderId) {
+    public Optional<Order> findOrderByOrderId(String orderId) {
         return this.orderRepository.findByOrderId(orderId);
     }
 
     public void cancelOrder(String orderId) {
         log.info("Cancel order with OrderId: {}", orderId);
-        OrderEntity order = findOrderByOrderId(orderId).orElse(null);
+        Order order = findOrderByOrderId(orderId).orElse(null);
         if (order == null) {
             throw new ResourceNotFoundException("Order with id: " + orderId + " is not found");
         }
 
-        if (order.getStatus() == OrderEntity.OrderStatus.DELIVERED) {
+        if (order.getStatus() == OrderStatus.DELIVERED) {
             throw new BadRequestException("Order is already delivered");
         }
-        order.setStatus(OrderEntity.OrderStatus.CANCELLED);
+        order.setStatus(OrderStatus.CANCELLED);
         orderRepository.save(order);
     }
 
-    public List<OrderEntity> findOrdersByStatus(OrderEntity.OrderStatus status) {
+    public List<Order> findOrdersByStatus(OrderStatus status) {
         return orderRepository.findByStatus(status);
     }
 
-    public void updateOrder(OrderEntity order) {
+    public void updateOrder(Order order) {
         orderRepository.save(order);
     }
 
-    public List<OrderEntity> findOrdersByUserId(Long userId) {
+    public List<Order> findOrdersByUserId(Long userId) {
         return this.orderRepository.findByCreatedBy(userId);
     }
 }

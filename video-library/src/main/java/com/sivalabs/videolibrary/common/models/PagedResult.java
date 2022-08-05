@@ -47,6 +47,4 @@ public class PagedResult<T> {
     public boolean hasNext() {
         return hasNext;
     }
-
 }
-

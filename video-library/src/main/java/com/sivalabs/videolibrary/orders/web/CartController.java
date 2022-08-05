@@ -4,8 +4,9 @@ import static com.sivalabs.videolibrary.orders.web.CartUtils.getOrCreateCart;
 
 import com.sivalabs.videolibrary.common.logging.Loggable;
 import com.sivalabs.videolibrary.orders.domain.Cart;
+import com.sivalabs.videolibrary.orders.domain.CreateOrderRequest;
 import com.sivalabs.videolibrary.orders.domain.LineItem;
-import com.sivalabs.videolibrary.orders.domain.OrderedProductEntity;
+import com.sivalabs.videolibrary.orders.domain.OrderedProduct;
 import com.sivalabs.videolibrary.orders.domain.ProductService;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,13 +22,13 @@ import org.springframework.web.bind.annotation.*;
 @Loggable
 @Slf4j
 public class CartController {
-
     private final ProductService productService;
 
     @GetMapping(value = "/cart")
     public String showCart(HttpServletRequest request, Model model) {
         Cart cart = getOrCreateCart(request);
         model.addAttribute("cart", cart);
+        model.addAttribute("order", new CreateOrderRequest());
         return "cart";
     }
 
@@ -43,14 +44,11 @@ public class CartController {
 
     @PostMapping(value = "/cart/items")
     @ResponseBody
-    public Cart addToCart(@RequestBody OrderedProductEntity product, HttpServletRequest request) {
+    public Cart addToCart(@RequestBody OrderedProduct product, HttpServletRequest request) {
         log.info("Add uuid: {} to cart", product.getUuid());
-        Cart cart = getOrCreateCart(request);
-        OrderedProductEntity item =
-                productService.findProductByCode(product.getUuid()).orElse(null);
+        OrderedProduct item = productService.findProductByCode(product.getUuid()).orElseThrow();
         log.info("Adding product: {}", item.getUuid());
-        cart.addItem(item);
-        return cart;
+        return CartUtils.addItem(request, item);
     }
 
     @PutMapping(value = "/cart/items")
@@ -60,29 +58,13 @@ public class CartController {
                 "Update cart line item uuid: {}, quantity: {} ",
                 item.getProduct().getUuid(),
                 item.getQuantity());
-        Cart cart = getOrCreateCart(request);
-        if (item.getQuantity() <= 0) {
-            Long uuid = item.getProduct().getUuid();
-            cart.removeItem(uuid);
-        } else {
-            cart.updateItemQuantity(item.getProduct(), item.getQuantity());
-        }
-        return cart;
+        return CartUtils.updateCartItem(request, item);
     }
 
     @DeleteMapping(value = "/cart/items/{uuid}")
     @ResponseBody
     public Cart removeCartItem(@PathVariable("uuid") Long uuid, HttpServletRequest request) {
         log.info("Remove cart line item uuid: {}", uuid);
-        Cart cart = getOrCreateCart(request);
-        cart.removeItem(uuid);
-        return cart;
-    }
-
-    @DeleteMapping(value = "/cart")
-    @ResponseBody
-    public Cart clearCart(HttpServletRequest request) {
-        log.info("Clear cart");
-        return CartUtils.clearCart(request);
+        return CartUtils.removeCartItem(request, uuid);
     }
 }

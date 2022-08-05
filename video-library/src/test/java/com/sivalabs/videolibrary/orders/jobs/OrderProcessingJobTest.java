@@ -4,9 +4,9 @@ import static com.sivalabs.videolibrary.datafactory.TestDataFactory.createOrder;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
-import com.sivalabs.videolibrary.orders.domain.OrderEntity;
-import com.sivalabs.videolibrary.orders.domain.OrderEntity.OrderStatus;
+import com.sivalabs.videolibrary.orders.domain.Order;
 import com.sivalabs.videolibrary.orders.domain.OrderService;
+import com.sivalabs.videolibrary.orders.domain.OrderStatus;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +23,7 @@ class OrderProcessingJobTest {
 
     @InjectMocks private OrderProcessingJob orderProcessingJob;
 
-    private List<OrderEntity> orderList = null;
+    private List<Order> orderList = null;
 
     @BeforeEach
     void setUp() {
@@ -39,7 +39,7 @@ class OrderProcessingJobTest {
 
         orderProcessingJob.processOrders();
 
-        verify(orderService, times(orderList.size())).updateOrder(any(OrderEntity.class));
+        verify(orderService, times(orderList.size())).updateOrder(any(Order.class));
     }
 
     @Test
@@ -48,6 +48,6 @@ class OrderProcessingJobTest {
 
         orderProcessingJob.processOrders();
 
-        verify(orderService, never()).updateOrder(any(OrderEntity.class));
+        verify(orderService, never()).updateOrder(any(Order.class));
     }
 }

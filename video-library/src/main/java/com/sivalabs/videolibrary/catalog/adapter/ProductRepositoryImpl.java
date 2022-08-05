@@ -3,14 +3,13 @@ package com.sivalabs.videolibrary.catalog.adapter;
 import com.sivalabs.videolibrary.catalog.domain.Product;
 import com.sivalabs.videolibrary.catalog.domain.ProductRepository;
 import com.sivalabs.videolibrary.common.models.PagedResult;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -35,14 +34,18 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public PagedResult<Product> findByCategory(Long categoryId, int pageNo) {
         Pageable pageable = getDefaultPageRequest(pageNo);
-        Page<Product> productPage = jpaProductRepository.findByCategory(categoryId, pageable).map(productMapper::map);
+        Page<Product> productPage =
+                jpaProductRepository.findByCategory(categoryId, pageable).map(productMapper::map);
         return new PagedResult<>(productPage);
     }
 
     @Override
     public PagedResult<Product> findByTitleContainingIgnoreCase(String query, int pageNo) {
         Pageable pageable = getDefaultPageRequest(pageNo);
-        Page<Product> productPage = jpaProductRepository.findByTitleContainingIgnoreCase(query, pageable).map(productMapper::map);
+        Page<Product> productPage =
+                jpaProductRepository
+                        .findByTitleContainingIgnoreCase(query, pageable)
+                        .map(productMapper::map);
         return new PagedResult<>(productPage);
     }
 

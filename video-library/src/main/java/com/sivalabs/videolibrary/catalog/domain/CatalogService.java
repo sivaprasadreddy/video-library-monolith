@@ -1,9 +1,8 @@
 package com.sivalabs.videolibrary.catalog.domain;
 
+import com.sivalabs.videolibrary.common.models.PagedResult;
 import java.util.List;
 import java.util.Optional;
-
-import com.sivalabs.videolibrary.common.models.PagedResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -63,5 +62,4 @@ public class CatalogService {
     public Category saveCategory(Category category) {
         return categoryRepository.save(category);
     }
-
 }

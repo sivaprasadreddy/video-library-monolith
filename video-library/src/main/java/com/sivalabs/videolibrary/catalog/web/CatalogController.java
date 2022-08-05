@@ -4,11 +4,10 @@ import com.sivalabs.videolibrary.catalog.domain.CatalogService;
 import com.sivalabs.videolibrary.catalog.domain.Category;
 import com.sivalabs.videolibrary.catalog.domain.Product;
 import com.sivalabs.videolibrary.common.logging.Loggable;
+import com.sivalabs.videolibrary.common.models.PagedResult;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import com.sivalabs.videolibrary.common.models.PagedResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

@@ -1,8 +1,14 @@
-package com.sivalabs.videolibrary.orders.domain;
+package com.sivalabs.videolibrary.orders.adapter;
 
 import com.sivalabs.videolibrary.common.entity.BaseEntity;
 import java.math.BigDecimal;
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

@@ -10,10 +10,11 @@ import com.sivalabs.videolibrary.customers.domain.SecurityService;
 import com.sivalabs.videolibrary.orders.domain.Cart;
 import com.sivalabs.videolibrary.orders.domain.CreateOrderRequest;
 import com.sivalabs.videolibrary.orders.domain.LineItem;
+import com.sivalabs.videolibrary.orders.domain.Order;
 import com.sivalabs.videolibrary.orders.domain.OrderConfirmationDTO;
-import com.sivalabs.videolibrary.orders.domain.OrderEntity;
-import com.sivalabs.videolibrary.orders.domain.OrderItemEntity;
+import com.sivalabs.videolibrary.orders.domain.OrderItem;
 import com.sivalabs.videolibrary.orders.domain.OrderService;
+import com.sivalabs.videolibrary.orders.domain.OrderStatus;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -34,7 +35,7 @@ public class OrderController {
     private final OrderService orderService;
     private final SecurityService securityService;
 
-    @PostMapping(value = "/cart/checkout")
+    @PostMapping(value = "/orders")
     @PreAuthorize("isAuthenticated()")
     public String placeOrder(
             @Valid @ModelAttribute("order") CreateOrderRequest order,
@@ -49,18 +50,17 @@ public class OrderController {
             return "cart";
         }
 
-        OrderEntity newOrder = new OrderEntity();
+        Order newOrder = new Order();
         newOrder.setCustomerName(order.getCustomerName());
         newOrder.setCustomerEmail(order.getCustomerEmail());
-        newOrder.setStatus(OrderEntity.OrderStatus.NEW);
+        newOrder.setStatus(OrderStatus.NEW);
         newOrder.setOrderId(UUID.randomUUID().toString());
         newOrder.setCreditCardNumber(order.getCreditCardNumber());
         newOrder.setCvv(order.getCvv());
         newOrder.setDeliveryAddress(order.getDeliveryAddress());
-        Set<OrderItemEntity> items = new HashSet<>();
+        Set<OrderItem> items = new HashSet<>();
         for (LineItem lineItem : cart.getItems()) {
-            OrderItemEntity orderItem = new OrderItemEntity();
-            orderItem.setOrder(newOrder);
+            OrderItem orderItem = new OrderItem();
             orderItem.setProductCode(String.valueOf(lineItem.getProduct().getUuid()));
             orderItem.setProductName(lineItem.getProduct().getTitle());
             orderItem.setProductPrice(lineItem.getProduct().getPrice());
@@ -81,7 +81,7 @@ public class OrderController {
     @GetMapping(value = "/orders/{orderId}")
     @PreAuthorize("isAuthenticated()")
     public String viewOrder(@PathVariable(value = "orderId") String orderId, Model model) {
-        OrderEntity order = orderService.findOrderByOrderId(orderId).orElse(null);
+        Order order = orderService.findOrderByOrderId(orderId).orElse(null);
         if (order == null) {
             throw new ResourceNotFoundException("Order with Id :" + orderId + " not found");
         }
@@ -96,8 +96,8 @@ public class OrderController {
     @PreAuthorize("isAuthenticated()")
     public String getUserOrders(Model model) {
         Long userId = securityService.getLoginUserId();
-        List<OrderEntity> orders = orderService.findOrdersByUserId(userId);
+        List<Order> orders = orderService.findOrdersByUserId(userId);
         model.addAttribute("orders", orders);
-        return "user-orders";
+        return "customer-orders";
     }
 }

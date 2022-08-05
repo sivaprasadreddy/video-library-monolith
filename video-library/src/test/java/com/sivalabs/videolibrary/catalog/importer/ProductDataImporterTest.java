@@ -23,8 +23,7 @@ class ProductDataImporterTest {
     void setUp() {
         movieRowMapper = new MovieRowMapper();
         applicationProperties = new ApplicationProperties();
-        applicationProperties
-                .setMoviesDataFiles(singletonList("/data/movies-test.jsonlines"));
+        applicationProperties.setMoviesDataFiles(singletonList("/data/movies-test.jsonlines"));
 
         catalogService = mock(CatalogService.class);
 

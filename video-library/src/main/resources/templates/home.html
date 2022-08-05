@@ -10,7 +10,7 @@
 
 <div layout:fragment="content">
     <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-9 offset-1">
         <div class="pb-5">
             <form method="get" th:action="@{/}">
                 <div class="row g-3 align-items-center">
@@ -58,7 +58,7 @@
         </div>
         <div th:replace="fragments/pagination :: pagination"> </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
         <h2>Genres</h2>
         <div class="list-group list-group-flush">
             <a href="#"
@@ -71,8 +71,6 @@
         </div>
     </div>
     </div>
-</div>
-<div layout:fragment="pageScripts">
 </div>
 </body>
 </html>

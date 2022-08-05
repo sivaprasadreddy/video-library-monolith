@@ -20,16 +20,16 @@ public class CatalogBrowsingSimulation extends Simulation {
 
     ChainBuilder gotoPage = repeat(5, "n").on(
         exec(session -> session.set("pageNo", (int)session.get("n") + 1))
-        .exec(http("Products Page ${pageNo}").get("/?page=${pageNo}"))
+        .exec(http("Products Page #{pageNo}").get("/?page=#{pageNo}"))
         .pause(1)
     );
 
     ChainBuilder byGenre = feed(genreFeeder)
-            .exec(http("Products By Genre").get("/category/${genre}"))
+            .exec(http("Products By Genre").get("/category/#{genre}"))
             .pause(3);
 
     ChainBuilder search = feed(searchFeeder)
-            .exec(http("Search").get("/?query=${key}"))
+            .exec(http("Search").get("/?query=#{key}"))
             .pause(3);
 
     ChainBuilder browseProducts = exec(byGenre)

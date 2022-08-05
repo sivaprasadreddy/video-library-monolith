@@ -28,7 +28,7 @@ public class JsonMovieDataImporter {
 
     public void importData() throws IOException {
         Long count = catalogService.findProductsCount();
-        if(count > 0) {
+        if (count > 0) {
             return;
         }
         catalogService.deleteAllProducts();

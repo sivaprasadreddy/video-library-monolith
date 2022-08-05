@@ -3,13 +3,10 @@ package com.sivalabs.videolibrary.catalog.adapter;
 import com.sivalabs.videolibrary.common.entity.BaseEntity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,9 +18,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EqualsAndHashCode(
-        of = {"id"},
-        callSuper = false)
 public class ProductEntity extends BaseEntity {
 
     @Id
@@ -60,5 +54,5 @@ public class ProductEntity extends BaseEntity {
             name = "product_category",
             joinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "CATEGORY_ID", referencedColumnName = "ID")})
-    private Set<CategoryEntity> categories = new HashSet<>();
+    private Set<CategoryEntity> categories;
 }

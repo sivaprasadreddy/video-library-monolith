@@ -44,8 +44,8 @@ public class OrderCreationSimulation extends Simulation {
     ChainBuilder login = feed(credentialsFeeder)
             .exec(http("Login")
                     .post("/login")
-                    .formParam("username", "${username}")
-                    .formParam("password", "${password}")
+                    .formParam("username", "#{username}")
+                    .formParam("password", "#{password}")
             ).pause(1);
 
     ChainBuilder createOrder = feed(randomQuantity)
@@ -56,10 +56,10 @@ public class OrderCreationSimulation extends Simulation {
             )
             .exec(
                 http("Create Order")
-                .post("/cart/checkout")
-                    .formParam("customerName", "${randString}")
-                    .formParam("customerEmail", "${randString}@gmail.com")
-                    .formParam("deliveryAddress", "${randString}")
+                .post("/orders")
+                    .formParam("customerName", "#{randString}")
+                    .formParam("customerEmail", "#{randString}@gmail.com")
+                    .formParam("deliveryAddress", "#{randString}")
                     .formParam("creditCardNumber", "1111222233334444")
                     .formParam("cvv", "123")
             ).pause(1);

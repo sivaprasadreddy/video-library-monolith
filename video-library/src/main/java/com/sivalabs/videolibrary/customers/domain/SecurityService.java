@@ -11,19 +11,19 @@ import org.springframework.stereotype.Component;
 @Loggable
 public class SecurityService {
 
-    public CustomerEntity loginUser() {
+    public Customer loginUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication.getPrincipal() == null) {
             return null;
         }
         if (authentication.getPrincipal() instanceof SecurityUser securityUser) {
-            return securityUser.getUser();
+            return securityUser.getCustomer();
         }
         return null;
     }
 
     public Long getLoginUserId() {
-        CustomerEntity user = loginUser();
+        Customer user = loginUser();
         return user == null ? null : user.getId();
     }
 }

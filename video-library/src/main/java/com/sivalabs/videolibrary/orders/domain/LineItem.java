@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LineItem {
-    private OrderedProductEntity product;
+    private OrderedProduct product;
     private int quantity;
 
     public BigDecimal getSubTotal() {

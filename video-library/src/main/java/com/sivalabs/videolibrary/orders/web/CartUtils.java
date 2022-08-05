@@ -1,6 +1,8 @@
 package com.sivalabs.videolibrary.orders.web;
 
 import com.sivalabs.videolibrary.orders.domain.Cart;
+import com.sivalabs.videolibrary.orders.domain.LineItem;
+import com.sivalabs.videolibrary.orders.domain.OrderedProduct;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,6 +21,29 @@ public class CartUtils {
     public static Cart clearCart(HttpServletRequest request) {
         Cart cart = getOrCreateCart(request);
         cart.setItems(new ArrayList<>(0));
+        return cart;
+    }
+
+    public static Cart addItem(HttpServletRequest request, OrderedProduct item) {
+        Cart cart = getOrCreateCart(request);
+        cart.addItem(item);
+        return cart;
+    }
+
+    public static Cart updateCartItem(HttpServletRequest request, LineItem item) {
+        Cart cart = getOrCreateCart(request);
+        if (item.getQuantity() <= 0) {
+            Long uuid = item.getProduct().getUuid();
+            cart.removeItem(uuid);
+        } else {
+            cart.updateItemQuantity(item.getProduct(), item.getQuantity());
+        }
+        return cart;
+    }
+
+    public static Cart removeCartItem(HttpServletRequest request, Long uuid) {
+        Cart cart = getOrCreateCart(request);
+        cart.removeItem(uuid);
         return cart;
     }
 }

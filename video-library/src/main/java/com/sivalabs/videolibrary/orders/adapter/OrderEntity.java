@@ -1,9 +1,20 @@
-package com.sivalabs.videolibrary.orders.domain;
+package com.sivalabs.videolibrary.orders.adapter;
 
 import com.sivalabs.videolibrary.common.entity.BaseEntity;
+import com.sivalabs.videolibrary.orders.domain.OrderStatus;
 import java.math.BigDecimal;
 import java.util.Set;
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,13 +56,6 @@ public class OrderEntity extends BaseEntity {
 
     @Column(name = "created_by")
     private Long createdBy;
-
-    public enum OrderStatus {
-        NEW,
-        DELIVERED,
-        CANCELLED,
-        ERROR
-    }
 
     public BigDecimal getTotalAmount() {
         BigDecimal amount = new BigDecimal("0.0");

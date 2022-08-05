@@ -14,7 +14,7 @@ public class Cart {
         items = new ArrayList<>();
     }
 
-    public void addItem(OrderedProductEntity product) {
+    public void addItem(OrderedProduct product) {
         for (LineItem lineItem : items) {
             if (lineItem.getProduct().getUuid().equals(product.getUuid())) {
                 lineItem.setQuantity(lineItem.getQuantity() + 1);
@@ -25,7 +25,7 @@ public class Cart {
         this.items.add(item);
     }
 
-    public void updateItemQuantity(OrderedProductEntity product, int quantity) {
+    public void updateItemQuantity(OrderedProduct product, int quantity) {
         for (LineItem lineItem : items) {
             if (lineItem.getProduct().getUuid().equals(product.getUuid())) {
                 lineItem.setQuantity(quantity);

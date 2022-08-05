@@ -14,7 +14,7 @@ public class ProductService {
     private final OrderedProductRepository productRepository;
 
     @Transactional(readOnly = true)
-    public Optional<OrderedProductEntity> findProductByCode(Long uuid) {
-        return productRepository.findByuuid(uuid);
+    public Optional<OrderedProduct> findProductByCode(Long uuid) {
+        return productRepository.findByUuid(uuid);
     }
 }

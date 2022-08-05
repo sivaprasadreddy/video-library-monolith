@@ -1,6 +1,6 @@
 package com.sivalabs.videolibrary.config.security;
 
-import com.sivalabs.videolibrary.customers.domain.CustomerEntity;
+import com.sivalabs.videolibrary.customers.domain.Customer;
 import com.sivalabs.videolibrary.customers.domain.CustomerService;
 import com.sivalabs.videolibrary.customers.domain.SecurityUser;
 import java.util.Optional;
@@ -18,9 +18,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        Optional<CustomerEntity> user = customerService.getUserByEmail(username);
-        if (user.isPresent()) {
-            return new SecurityUser(user.get());
+        Optional<Customer> customer = customerService.getUserByEmail(username);
+        if (customer.isPresent()) {
+            return new SecurityUser(customer.get());
         } else {
             throw new UsernameNotFoundException("No user found with username " + username);
         }
