@@ -1,6 +1,6 @@
 package com.sivalabs.videolibrary.customers.domain;
 
-import com.sivalabs.videolibrary.common.exception.ApplicationException;
+import com.sivalabs.videolibrary.common.exception.ResourceAlreadyExistsException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,8 @@ public class CustomerService {
 
     public Customer createUser(Customer user) {
         if (customerRepository.existsByEmail(user.getEmail())) {
-            throw new ApplicationException("Email " + user.getEmail() + " is already in use");
+            throw new ResourceAlreadyExistsException(
+                    "Email " + user.getEmail() + " is already in use");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return customerRepository.save(user);
