@@ -44,7 +44,7 @@ ext {
     set('commonsIoVersion', "2.11.0")
     set('opencsvVersion', "5.0")
     set('archunitVersion', "0.23.1")
-    set('datafakerVersion', "1.4.0")
+    set('datafakerVersion', "1.5.0")
     set('seleniumVersion', "4.2.1")
     set('webdrivermanagerVersion', "5.2.3")
 }
