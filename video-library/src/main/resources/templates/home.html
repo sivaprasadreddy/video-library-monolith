@@ -31,7 +31,7 @@
         <div th:replace="fragments/pagination :: pagination"> </div>
         <div class="row row-cols-1 row-cols-md-4">
             <div class="col mb-3" th:each="product: ${productsData.content}">
-                <div class="card h-100" >
+                <div class="card h-100 product" th:attr="data-test-id=${product.id},data-title=${product.title}">
                     <a href="#" th:href="${'/products/'+product.id}">
                         <img th:src="${product.posterPath}"
                          onerror="this.onerror=null; this.src='/images/image-not-found.png'"

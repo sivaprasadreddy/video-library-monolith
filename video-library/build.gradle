@@ -4,7 +4,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.3'
     id 'io.spring.dependency-management' version '1.0.13.RELEASE'
     id 'com.gorylenko.gradle-git-properties' version "2.4.1"
-    id 'org.sonarqube' version "3.0"
+    id 'org.sonarqube' version "3.4.0.2513"
     id 'com.google.cloud.tools.jib' version "3.2.1"
     id 'com.diffplug.spotless' version "6.9.1"
 }
@@ -36,7 +36,7 @@ repositories {
 ext {
     set('springCloudVersion', "2021.0.3")
     set('testcontainersVersion', "1.17.3")
-    set('bootstrapVersion', "5.1.3")
+    set('bootstrapVersion', "5.2.0")
     set('webjarsLocatorVersion', "0.45")
     set('jqueryVersion', "3.6.0")
     set('fontAwesomeVersion', "6.1.2")
@@ -45,8 +45,8 @@ ext {
     set('opencsvVersion', "5.6")
     set('archunitVersion', "0.23.1")
     set('datafakerVersion', "1.5.0")
-    set('seleniumVersion', "4.2.1")
-    set('webdrivermanagerVersion', "5.2.3")
+    set('seleniumVersion', "4.4.0")
+    set('webdrivermanagerVersion', "5.3.0")
 }
 
 dependencies {
