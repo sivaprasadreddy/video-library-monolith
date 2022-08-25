@@ -7,7 +7,7 @@ describe('video-library', () => {
     })
 
     it('displays movies list', () => {
-        //cy.get('.product').should('exist')
-        //cy.get('.product').should('have.length', 24)
+        cy.get('.product').should('exist')
+        cy.get('.product').should('have.length', 24)
     })
 })
