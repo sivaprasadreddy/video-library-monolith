@@ -38,7 +38,7 @@ ext {
     set('testcontainersVersion', "1.17.3")
     set('bootstrapVersion', "5.2.0")
     set('webjarsLocatorVersion', "0.45")
-    set('jqueryVersion', "3.6.0")
+    set('jqueryVersion', "3.6.1")
     set('fontAwesomeVersion', "6.1.2")
     set('commonsLangVersion', "3.12.0")
     set('commonsIoVersion', "2.11.0")
