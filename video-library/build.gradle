@@ -35,8 +35,8 @@ repositories {
 
 ext {
     set('springCloudVersion', "2021.0.4")
-    set('testcontainersVersion', "1.17.3")
-    set('bootstrapVersion', "5.2.0")
+    set('testcontainersVersion', "1.17.5")
+    set('bootstrapVersion', "5.2.2")
     set('webjarsLocatorVersion', "0.45")
     set('jqueryVersion', "3.6.1")
     set('fontAwesomeVersion', "6.1.2")
