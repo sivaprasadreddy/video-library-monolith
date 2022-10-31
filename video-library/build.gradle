@@ -37,7 +37,7 @@ ext {
     set('springCloudVersion', "2021.0.4")
     set('testcontainersVersion', "1.17.5")
     set('bootstrapVersion', "5.2.2")
-    set('webjarsLocatorVersion', "0.45")
+    set('webjarsLocatorVersion', "0.46")
     set('jqueryVersion', "3.6.1")
     set('fontAwesomeVersion', "6.2.0")
     set('commonsLangVersion', "3.12.0")
