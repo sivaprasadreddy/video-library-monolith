@@ -45,7 +45,7 @@ ext {
     set('opencsvVersion', "5.7.1")
     set('archunitVersion', "1.0.0")
     set('datafakerVersion', "1.6.0")
-    set('seleniumVersion', "4.5.3")
+    set('seleniumVersion', "4.6.0")
     set('webdrivermanagerVersion', "5.3.0")
 }
 
